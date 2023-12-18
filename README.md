@@ -15,21 +15,14 @@
 3. SSH access enabled.
 4. ```rclone``` installed and configured with a profile named node-teslausb (test that your config is working using ```rclone mkdir node-teslausb:TeslaCam```).
 
-### Run as root:
-
 ```
-apt update && apt install git -y
-git clone https://github.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb.git /bin/node-teslausb
-chmod +x /bin/node-teslausb/deploy/install.sh
-/bin/node-teslausb/deploy/install.sh
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install.sh)"
 ```
 
 ## Upgrading to the latest version
 
-### Run as root:
-
 ```
-cd /bin/node-teslausb/deploy && sudo chmod +x upgrade.sh && sudo ./upgrade.sh
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/upgrade.sh)"
 ```
 
 ## To-do
