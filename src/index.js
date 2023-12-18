@@ -2,7 +2,7 @@
 
 import util from 'util';
 import { exec } from 'child_process';
-import { promises as fs } from 'fs';
+// import { promises as fspromises } from 'fs';
 import ping from 'ping';
 import path from 'path';
 import ini from 'ini';
@@ -112,32 +112,32 @@ const executeBashCommand = async (command) => {
 };
 
 // Not in use - leaving for now as it may be useful later
-async function listFolderContents(folderPath, recursive = false) {
-    let entries = [];
-    try {
-        entries = await fs.readdir(folderPath, { withFileTypes: true });
-    } catch (error) {
-        return [];
-    }
-    let files = [];
+// async function listFolderContents(folderPath, recursive = false) {
+//     let entries = [];
+//     try {
+//         entries = await fspromises.readdir(folderPath, { withFileTypes: true });
+//     } catch (error) {
+//         return [];
+//     }
+//     let files = [];
 
-    for (const entry of entries) {
-        const entryPath = path.join(folderPath, entry.name);
+//     for (const entry of entries) {
+//         const entryPath = path.join(folderPath, entry.name);
 
-        if (entry.isDirectory()) {
-            if (recursive) {
-                const subdirectoryFiles = await listFolderContents(entryPath, true);
-                files = files.concat(subdirectoryFiles);
-            } else {
-                files.push({ path: entryPath, type: 'directory' });
-            }
-        } else {
-            files.push({ path: entryPath, type: 'file' });
-        }
-    }
+//         if (entry.isDirectory()) {
+//             if (recursive) {
+//                 const subdirectoryFiles = await listFolderContents(entryPath, true);
+//                 files = files.concat(subdirectoryFiles);
+//             } else {
+//                 files.push({ path: entryPath, type: 'directory' });
+//             }
+//         } else {
+//             files.push({ path: entryPath, type: 'file' });
+//         }
+//     }
 
-    return files;
-}
+//     return files;
+// }
 
 const checkIfArchiveIsReachable = async (archiveServer) => {
 
