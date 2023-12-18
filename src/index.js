@@ -22,6 +22,10 @@ const config = {
         rcloneConfig: "node-teslausb",
         destinationPath: "teslausb/TeslaCam"
     },
+    paths: {
+        sentryClips: "/mnt/TeslaCam/TeslaCam/SentryClips",
+        savedClips: "/mnt/TeslaCam/TeslaCam/SavedClips",
+    },
     delayBetweenCopyRetryInSeconds: 3600,
 }
 
@@ -60,7 +64,8 @@ const processInterval = async () => {
             errorWithTimestamp("Error mounting TeslaCam:", error);
         }
         try {
-            await rcloneCopy();
+            await rcloneCopy(config.paths.sentryClips);
+            await rcloneCopy(config.paths.savedClips);
         } catch (error) {
             errorWithTimestamp("Error copying TeslaCam:", error);
         }
@@ -88,10 +93,11 @@ const unmountTeslaCam = async () => {
     await executeBashCommand("sudo umount /mnt/TeslaCam && systemctl daemon-reload")
 }
 
-const rcloneCopy = async () => {
-    logWithTimestamp("Starting rclone copy")
-    await executeBashCommand(`rclone copy /mnt/TeslaCam/TeslaCam/SentryClips ${config.archive.rcloneConfig}:${config.archive.destinationPath}/SentryClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`)
-    await executeBashCommand(`rclone copy /mnt/TeslaCam/TeslaCam/SavedClips ${config.archive.rcloneConfig}:${config.archive.destinationPath}/SavedClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`)
+const rcloneCopy = async (sourcePath) => {
+    logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
+    if (fs.existsSync(sourcePath) === false) return
+    await executeBashCommand(`rclone copy ${sourcePath} ${config.archive.rcloneConfig}:${config.archive.destinationPath}/SentryClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`)
+
 }
 
 // TODO: Fix stdout / stderr output in log files
