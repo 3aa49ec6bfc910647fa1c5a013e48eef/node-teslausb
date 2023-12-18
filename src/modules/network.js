@@ -1,4 +1,4 @@
-import { logWithTimestamp } from "./log"
+import { logWithTimestamp, errorWithTimestamp } from "./log.js";
 
 export const restartWifi = async () => {
     logWithTimestamp("Restarting wifi")

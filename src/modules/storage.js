@@ -1,5 +1,5 @@
-import { logWithTimestamp, errorWithTimestamp } from "./log"
-import { executeBashCommand } from "./bash"
+import { logWithTimestamp, errorWithTimestamp } from "./log.js"
+import { executeBashCommand } from "./bash.js"
 
 export const mountTeslaCamAsReadOnly = async () => {
     logWithTimestamp("Mounting TeslaCam")

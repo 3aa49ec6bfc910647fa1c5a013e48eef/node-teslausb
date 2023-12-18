@@ -1,7 +1,7 @@
-import { logWithTimestamp, errorWithTimestamp } from "./log";
+import { logWithTimestamp, errorWithTimestamp } from "./log.js";
 
 // TODO: Fix stdout / stderr output in log files
-const executeBashCommand = async (command) => {
+export const executeBashCommand = async (command) => {
     try {
         const { stdout, stderr } = await util.promisify(exec)(command);
         logWithTimestamp(`stdout: ${stdout}`);
