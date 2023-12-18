@@ -4,7 +4,7 @@
 
 **node-teslausb in its current form it has far less functionality than teslausb**.  However it is intended to be an easily extensible solution, orchestrated by [Node.js](https://nodejs.org/en) and more features will be added over time.  It should be noted that there is only limited hardware support with [Raspberry Pi Zero 2 W](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/) being the only supported device.
 
-**Warning, this is pre-alpha - use at your own risk, it has undergone very limited testing**
+**Warning, this is pre-alpha - use at your own risk, it has undergone very limited testing.**
 
 ## Installation
 
@@ -40,3 +40,4 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Add hotspot functionality to allow devices to connect to the device and browse the SD card using samba
 - [ ] Add support for secondary wifi networks (e.g. so that it can be hot-spotted to a phone while away from home network)
 - [ ] Get all relevant information included in logs
+- [ ] Flash LED to represent different states
