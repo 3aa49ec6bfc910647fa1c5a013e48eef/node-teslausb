@@ -6,6 +6,7 @@ import { promises as fs } from 'fs';
 import ping from 'ping';
 import path from 'path';
 import ini from 'ini';
+import fs from 'fs';
 
 const getRcloneConfig = () => {
     const configPath = '~/.config/rclone/rclone.conf';
@@ -51,7 +52,7 @@ const processInterval = async () => {
     const archiveReachable = await checkIfArchiveIsReachable(config.archive.server);
     if (archiveReachable === false) {
         await restartWifi();
-    } else if (state.lastCopyDate === undefined || Date.now() > state.lastCopyDate + config.delayBetweenCopyRetryInSeconds * 1000) {
+    } else if (state.lastCopyDate === undefined || (Date.now() > state.lastCopyDate + config.delayBetweenCopyRetryInSeconds * 1000)) {
         logWithTimestamp("Connected to archive server, starting copy");
         try {
             await mountTeslaCamAsReadOnly();
