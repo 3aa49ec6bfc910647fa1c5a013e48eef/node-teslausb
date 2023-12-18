@@ -1,20 +1,8 @@
 // import { createDb, addItem, getItem, updateItem, queryItem } from './modules/db.js';
 
-import util from 'util';
-import { exec } from 'child_process';
-// import { promises as fspromises } from 'fs';
-import ping from 'ping';
-import path from 'path';
-import ini from 'ini';
-import fs from 'fs';
-
-const getRcloneConfig = () => {
-    const configPath = '/root/.config/rclone/rclone.conf';
-    const configContent = fs.readFileSync(configPath, 'utf-8');
-    const config = ini.parse(configContent);
-
-    return config['node-teslausb'];
-}
+import { getRcloneConfig, rcloneCopy } from './modules/rclone.js';
+import { logWithTimestamp, errorWithTimestamp } from './modules/log.js';
+import { restartWifi, checkIfArchiveIsReachable } from './modules/network.js';
 
 const config = {
     archive: {
@@ -32,18 +20,6 @@ const config = {
 const state = {
     errorCount: 0,
     lastCopyDate: undefined
-};
-
-const getTimestamp = () => {
-    return new Date().toISOString();
-};
-
-const logWithTimestamp = (...args) => {
-    console.log(getTimestamp(), ...args);
-};
-
-const errorWithTimestamp = (...args) => {
-    console.error(getTimestamp(), ...args);
 };
 
 logWithTimestamp("Starting");
@@ -77,92 +53,6 @@ const processInterval = async () => {
         state.lastCopyDate = Date.now();
     }
 }
-
-const restartWifi = async () => {
-    logWithTimestamp("Restarting wifi")
-    await executeBashCommand("ifconfig wlan0 down && ifconfig wlan0 up")
-}
-
-const mountTeslaCamAsReadOnly = async () => {
-    logWithTimestamp("Mounting TeslaCam")
-    await executeBashCommand("sudo mount -o ro /vusb/TeslaCam /mnt/TeslaCam && systemctl daemon-reload")
-}
-
-const unmountTeslaCam = async () => {
-    logWithTimestamp("Unmounting TeslaCam")
-    await executeBashCommand("sudo umount /mnt/TeslaCam && systemctl daemon-reload")
-}
-
-const rcloneCopy = async (sourcePath) => {
-    if (fs.existsSync(sourcePath) === false) {
-        logWithTimestamp(`Skipping rclone copy for ${sourcePath} (does not exist)`)
-        return
-    }
-    logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
-    await executeBashCommand(`rclone copy ${sourcePath} ${config.archive.rcloneConfig}:${config.archive.destinationPath}/SentryClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`)
-
-}
-
-// TODO: Fix stdout / stderr output in log files
-const executeBashCommand = async (command) => {
-    try {
-        const { stdout, stderr } = await util.promisify(exec)(command);
-        console.log(`stdout: ${stdout}`);
-
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-        }
-
-        return stdout;
-    } catch (error) {
-        console.error(`Error: ${error.message}`);
-        throw error;
-    }
-};
-
-// Not in use - leaving for now as it may be useful later
-// async function listFolderContents(folderPath, recursive = false) {
-//     let entries = [];
-//     try {
-//         entries = await fspromises.readdir(folderPath, { withFileTypes: true });
-//     } catch (error) {
-//         return [];
-//     }
-//     let files = [];
-
-//     for (const entry of entries) {
-//         const entryPath = path.join(folderPath, entry.name);
-
-//         if (entry.isDirectory()) {
-//             if (recursive) {
-//                 const subdirectoryFiles = await listFolderContents(entryPath, true);
-//                 files = files.concat(subdirectoryFiles);
-//             } else {
-//                 files.push({ path: entryPath, type: 'directory' });
-//             }
-//         } else {
-//             files.push({ path: entryPath, type: 'file' });
-//         }
-//     }
-
-//     return files;
-// }
-
-const checkIfArchiveIsReachable = async (archiveServer) => {
-
-    try {
-        const res = await ping.promise.probe(archiveServer, {
-            timeout: 5,  // Timeout in seconds
-            extra: ["-c", "1"],  // Sends only 1 packet
-        });
-
-        logWithTimestamp(`${archiveServer} is ${res.alive ? 'reachable' : 'not reachable'}`);
-        return res.alive;
-    } catch (error) {
-        errorWithTimestamp('Error pinging archive server:', error);
-        return false;
-    }
-};
 
 let isRunning = false;
 
