@@ -51,7 +51,7 @@ const processInterval = async () => {
     const archiveReachable = await checkIfArchiveIsReachable(config.archive.server);
     if (archiveReachable === false) {
         await restartWifi();
-    } else if (state.lastCopyDate === undefined || new Date(state.lastCopyDate).getTime() + config.delayBetweenCopyRetryInSeconds < new Date(Date.now()).getTime()) {
+    } else if (state.lastCopyDate === undefined || Date.now() > state.lastCopyDate + config.delayBetweenCopyRetryInSeconds * 1000) {
         logWithTimestamp("Connected to archive server, starting copy");
         try {
             await mountTeslaCamAsReadOnly();
