@@ -7,6 +7,8 @@ cd /bin/node-teslausb
 git fetch --all
 git reset --hard origin/main
 
+echo "Restarting node-teslausb service..."
+
 systemctl restart node-teslausb
 
 # journalctl -u node-teslausb.service
