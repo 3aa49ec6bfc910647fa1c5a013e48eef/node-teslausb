@@ -9,7 +9,7 @@ import ini from 'ini';
 import fs from 'fs';
 
 const getRcloneConfig = () => {
-    const configPath = '~/.config/rclone/rclone.conf';
+    const configPath = '/root/.config/rclone/rclone.conf';
     const configContent = fs.readFileSync(configPath, 'utf-8');
     const config = ini.parse(configContent);
 
