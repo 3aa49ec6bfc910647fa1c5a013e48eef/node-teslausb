@@ -10,8 +10,8 @@
 
 ### Pre-requisites:
 
-1. Raspberry Pi Zero 2 W.
-2. Any image should work, but this has only been tested with [2023-12-11-raspios-bookworm-arm64-lite.img](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz).
+1. Raspberry Pi Zero 2 W (128GB SD card recommended).
+2. Any OS default image should work, but limited testing has occurred and only with [2023-12-11-raspios-bookworm-arm64-lite.img](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz).
 3. SSH access enabled.
 4. ```rclone``` installed and configured with a profile named node-teslausb (test that your config is working using ```rclone mkdir node-teslausb:TeslaCam```).
 
