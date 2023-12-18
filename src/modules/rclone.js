@@ -2,6 +2,7 @@ import path from 'path';
 import ini from 'ini';
 import { logWithTimestamp, errorWithTimestamp } from './log.js';
 import fs from 'fs';
+import { executeBashCommand } from './bash.js';
 
 export const getRcloneConfig = () => {
     const configPath = '/root/.config/rclone/rclone.conf';

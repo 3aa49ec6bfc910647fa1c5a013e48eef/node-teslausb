@@ -3,6 +3,7 @@
 import { getRcloneConfig, rcloneCopy } from './modules/rclone.js';
 import { logWithTimestamp, errorWithTimestamp } from './modules/log.js';
 import { restartWifi, checkIfArchiveIsReachable } from './modules/network.js';
+import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './modules/storage.js';
 
 const config = {
     archive: {
