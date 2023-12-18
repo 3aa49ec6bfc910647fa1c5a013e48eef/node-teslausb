@@ -1,0 +1,19 @@
+{
+  "name": "teslausb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ini": "^4.1.1",
+    "path": "^0.12.7",
+    "ping": "^0.4.4",
+    "sqlite3": "^5.1.6"
+  }
+}
