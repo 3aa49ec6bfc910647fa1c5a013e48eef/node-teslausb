@@ -41,8 +41,8 @@ const processInterval = async () => {
             errorWithTimestamp("Error mounting TeslaCam:", error);
         }
         try {
-            await rcloneCopy(config.paths.sentryClips);
-            await rcloneCopy(config.paths.savedClips);
+            await rcloneCopy(config.paths.sentryClips, config.archive.rcloneConfig, config.archive.destinationPath);
+            await rcloneCopy(config.paths.savedClips, config.archive.rcloneConfig, config.archive.destinationPath);
         } catch (error) {
             errorWithTimestamp("Error copying TeslaCam:", error);
         }

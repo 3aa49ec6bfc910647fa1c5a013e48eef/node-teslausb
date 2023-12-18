@@ -12,12 +12,12 @@ export const getRcloneConfig = () => {
     return config['node-teslausb'];
 }
 
-export const rcloneCopy = async (sourcePath) => {
+export const rcloneCopy = async (sourcePath, rcloneConfig, destinationPath) => {
     if (fs.existsSync(sourcePath) === false) {
         logWithTimestamp(`Skipping rclone copy for ${sourcePath} (does not exist)`)
         return
     }
     logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
-    await executeBashCommand(`rclone copy ${sourcePath} ${config.archive.rcloneConfig}:${config.archive.destinationPath}/SentryClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`)
+    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`)
 
 }
