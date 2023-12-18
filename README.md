@@ -30,6 +30,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Perform some more extensive testing to validate that it works and works reliably
 - [ ] Add support for using rclone providers other than SMB
 - [ ] Provide validation of rclone config during setup
+- [ ] Delete files at source once copied
 - [ ] Migrate from Javascript to TypeScript
 - [ ] Fix project structure
 - [ ] Clean up the install and configuration process
