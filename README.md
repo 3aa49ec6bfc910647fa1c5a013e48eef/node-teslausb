@@ -27,7 +27,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 
 ## To-do
 
-- [ ] Perform some more extensive testing to validate that it works and works reliably
+- [ ] Perform some actual testing to validate that it works and works reliably
 - [ ] Add support for using rclone providers other than SMB
 - [ ] Provide validation of rclone config during setup
 - [ ] Delete files at source once copied
