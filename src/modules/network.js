@@ -1,4 +1,6 @@
 import { logWithTimestamp, errorWithTimestamp } from "./log.js";
+import ping from "ping";
+import { executeBashCommand } from "./bash.js";
 
 export const restartWifi = async () => {
     logWithTimestamp("Restarting wifi")
