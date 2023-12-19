@@ -6,6 +6,9 @@ import { executeBashCommand } from './bash.js';
 
 export const getRcloneConfig = () => {
     const configPath = '/root/.config/rclone/rclone.conf';
+    if (fs.existsSync(configPath) === false) {
+        throw new Error(`rclone config file not found at ${configPath}, need to run 'rclone config'`);
+    }
     const configContent = fs.readFileSync(configPath, 'utf-8');
     const config = ini.parse(configContent);
 
