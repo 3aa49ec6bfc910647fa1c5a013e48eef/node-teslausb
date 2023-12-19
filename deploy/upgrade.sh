@@ -7,6 +7,24 @@ cd /bin/node-teslausb
 git fetch --all
 git reset --hard origin/main
 
+cat << EOF > /lib/systemd/system/node-teslausb.service
+[Unit]
+Description=node-teslausb
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 10
+ExecStart=/usr/bin/node /bin/node-teslausb/worker/index.js
+WorkingDirectory=/bin/node-teslausb
+StandardOutput=append:/logs/node-teslausb.log
+StandardError=inherit
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 echo "Restarting node-teslausb service..."
 
 systemctl restart node-teslausb
