@@ -1,4 +1,6 @@
-cd /bin/node-teslausb/website
+# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install-website.sh)"
+
+cd /bin/node-teslausb/src/website
 npm i
 npm run build
 
@@ -10,7 +12,7 @@ DefaultDependencies=no
 [Service]
 Type=simple
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/node /bin/node-teslausb/src/website/build/index.js
+ExecStart=/usr/bin/node /bin/node-teslausb/build/website/index.js
 WorkingDirectory=/bin/node-teslausb
 StandardOutput=append:/logs/node-teslausb-www.log
 StandardError=inherit
