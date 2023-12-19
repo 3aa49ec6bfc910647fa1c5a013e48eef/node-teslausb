@@ -6,6 +6,7 @@
 cd /bin/node-teslausb
 git fetch --all
 git reset --hard origin/main
+cd /bin/node-teslausb/worker/src && npm i
 
 cat << EOF > /lib/systemd/system/node-teslausb.service
 [Unit]

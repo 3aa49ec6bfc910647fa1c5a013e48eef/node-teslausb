@@ -1,4 +1,5 @@
 cd /bin/node-teslausb/website
+npm i
 npm run build
 
 cat << EOF > /lib/systemd/system/node-teslausb-www.service
@@ -9,7 +10,7 @@ DefaultDependencies=no
 [Service]
 Type=simple
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/node /bin/node-teslausb/website/index.js
+ExecStart=/usr/bin/node /bin/node-teslausb/src/website/build/index.js
 WorkingDirectory=/bin/node-teslausb
 StandardOutput=append:/logs/node-teslausb-www.log
 StandardError=inherit
