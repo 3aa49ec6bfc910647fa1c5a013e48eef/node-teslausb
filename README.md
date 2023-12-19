@@ -41,4 +41,5 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Add hotspot functionality to allow devices to connect to the device and browse the SD card using samba
 - [ ] Add support for secondary wifi networks (e.g. so that it can be hot-spotted to a phone while away from home network)
 - [ ] Get all relevant information included in logs
+- [ ] Backup and restore config
 - [ ] Flash LED to represent different states
