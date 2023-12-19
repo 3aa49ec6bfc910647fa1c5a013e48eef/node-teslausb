@@ -63,6 +63,9 @@ systemctl enable node-teslausb.service
 # Not sure if this next line is needed
 systemctl start node-teslausb.service
 
+# Refresh the systemd daemon
+systemctl daemon-reload
+
 # Clean unused packages
 # sudo apt-get autoremove --purge
 
