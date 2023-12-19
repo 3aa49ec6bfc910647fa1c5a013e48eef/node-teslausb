@@ -35,6 +35,7 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Fix project structure
 - [ ] Clean up the install and configuration process
 - [ ] Package the project properly (e.g. NPM)
+- [ ] Add lifecycle management for destination (retention policy etc)
 - [ ] Add web server for configuration, status and statistics
 - [ ] Add functionality to handle scenarios such as keeping car awake for transfers
 - [ ] Add hotspot functionality to allow devices to connect to the device and browse the SD card using samba
