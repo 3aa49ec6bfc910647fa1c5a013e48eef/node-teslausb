@@ -18,7 +18,7 @@ Type=simple
 ExecStartPre=/bin/sleep 10
 ExecStart=/usr/bin/node /bin/node-teslausb/worker/index.js
 WorkingDirectory=/bin/node-teslausb
-StandardOutput=append:/logs/node-teslausb.log
+StandardOutput=append:/logs/worker.log
 StandardError=inherit
 Restart=always
 
