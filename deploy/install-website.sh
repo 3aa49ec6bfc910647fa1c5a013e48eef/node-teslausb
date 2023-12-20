@@ -11,7 +11,8 @@ DefaultDependencies=no
 
 [Service]
 Type=simple
-ExecStart=PORT=80 /usr/bin/node /bin/node-teslausb/build/website/index.js
+Environment="PORT=80"
+ExecStart=/usr/bin/node /bin/node-teslausb/build/website/index.js
 WorkingDirectory=/bin/node-teslausb
 StandardOutput=append:/logs/website.log
 StandardError=inherit
