@@ -1,8 +1,8 @@
 name: Build and Release - Website
 
-# permissions:
-#   contents: write
-#   actions: read
+permissions:
+  contents: write
+  actions: read
 
 on:
   push:
