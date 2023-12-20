@@ -43,39 +43,29 @@ jobs:
           name: website
           path: |
             build/website/**
-
+  
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
+  
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
           name: website
           path: build/website
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
         with:
+          files: build/website/**
           tag_name: ${{ github.run_id }}
-          release_name: Release ${{ github.run_id }}
+          name: Release ${{ github.run_id }}
+          body: "Release of build ${{ github.run_id }}"
           draft: false
           prerelease: false
-          body: "Release of build ${{ github.run_id }}"
-          commitish: ${{ github.sha }}
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/website
-          asset_name: website.zip
-          asset_content_type: application/zip
+  
