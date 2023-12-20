@@ -1,5 +1,6 @@
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
 import { readFileSync, existsSync, unlinkSync } from 'fs';
+import fs from 'fs';
 import { logNameToPathMapping } from '$lib/constants';
 
 const getLogContent = (logName: string): string => {
@@ -29,6 +30,21 @@ const deleteLogFile = (logName: string | undefined): void => {
     }
 }
 
+const clearLogFile = (logPath: string | undefined) => {
+
+    if (!logPath || !existsSync(logPath)) {
+        return;
+    }
+
+    fs.truncate(logPath, 0, (err) => {
+      if (err) {
+        console.error('Error truncating file:', err);
+        return;
+      }
+      console.log('Log file cleared:', logPath);
+    });
+  };
+
 export const GET: RequestHandler = async (event: RequestEvent) => {
     const logName = event.params.logName;
 	const logContent = logName !== undefined ? getLogContent(logName) : "";
@@ -44,7 +60,8 @@ export const GET: RequestHandler = async (event: RequestEvent) => {
 export const DELETE: RequestHandler = async (event: RequestEvent) => {
     const logName = event.params.logName;
 
-    deleteLogFile(logName);
+    // deleteLogFile(logName);
+    clearLogFile(logName);
 
     return new Response(JSON.stringify({ message: `OK` }), {
         status: 200,
