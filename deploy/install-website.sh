@@ -22,10 +22,10 @@ fi
 curl -L $ASSET_URL -o /tmp/website.zip
 
 # Remove existing website directory
-rm -rf /bin/node-teslausb/build/website
+sudo rm -rf /bin/node-teslausb/build/website
 
 # Extract the file to /bin/node-teslausb/build/website (this is risky to unzip to root, fix later)
-unzip /tmp/website.zip -d /bin/node-teslausb
+unzip -o /tmp/website.zip -d /bin/node-teslausb
 
 cat << EOF > /lib/systemd/system/node-teslausb-www.service
 [Unit]
