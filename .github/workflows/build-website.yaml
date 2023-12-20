@@ -35,8 +35,7 @@ jobs:
             CI: true
   
         - name: Zip Build Artifacts
-          run: zip -r /website.zip build/website
-          working-directory: src/website
+          run: zip -r website.zip build/website
   
         - name: Archive Production Artifact
           uses: actions/upload-artifact@v3
