@@ -3,6 +3,22 @@ import { logWithTimestamp, errorWithTimestamp } from './log.js';
 import fs from 'fs';
 import { executeBashCommand } from './bash.js';
 
+import { clearInterval, setInterval } from 'timers';
+
+export const rcloneCopyWithProgress = async (path) => {
+    const intervalId = setInterval(() => {
+        logWithTimestamp("Copying files...");
+        // Add something useful here, e.g. giving percentage complete, transfer speed, time remaining
+    }, 60000); // 60000 ms = 1 minute
+
+    try {
+        await rcloneCopy(path, config.archive.rcloneConfig, config.archive.destinationPath);
+    } finally {
+        clearInterval(intervalId);
+    }
+};
+
+
 export const getRcloneConfig = () => {
     const configPath = '/root/.config/rclone/rclone.conf';
     if (fs.existsSync(configPath) === false) {

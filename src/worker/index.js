@@ -1,6 +1,6 @@
 // import { createDb, addItem, getItem, updateItem, queryItem } from './modules/db.js';
 
-import { getRcloneConfig, rcloneCopy } from './modules/rclone.js';
+import { getRcloneConfig, rcloneCopyWithProgress } from './modules/rclone.js';
 import { logWithTimestamp, errorWithTimestamp } from './modules/log.js';
 import { restartWifi, checkIfArchiveIsReachable } from './modules/network.js';
 import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './modules/storage.js';
@@ -41,8 +41,13 @@ const processInterval = async () => {
             errorWithTimestamp("Error mounting TeslaCam:", error);
         }
         try {
-            await rcloneCopy(config.paths.sentryClips, config.archive.rcloneConfig, config.archive.destinationPath);
-            await rcloneCopy(config.paths.savedClips, config.archive.rcloneConfig, config.archive.destinationPath);
+            const paths = [
+                config.paths.sentryClips,
+                config.paths.savedClips,
+            ];
+            for (const path of paths) {
+                await rcloneCopyWithProgress(path);
+            }
         } catch (error) {
             errorWithTimestamp("Error copying TeslaCam:", error);
         }
