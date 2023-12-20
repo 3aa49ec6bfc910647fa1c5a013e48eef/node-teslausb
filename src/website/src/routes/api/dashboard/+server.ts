@@ -6,7 +6,7 @@ export async function POST({ request }) {
 }
 
 // This handler will respond to PUT, PATCH, DELETE, etc.
-/** @type {import('./$types').RequestHandler} */
+// /** @type {import('./$types').RequestHandler} */
 export async function fallback({ request }) {
 	return text(`I caught your ${request.method} request!`);
 }
