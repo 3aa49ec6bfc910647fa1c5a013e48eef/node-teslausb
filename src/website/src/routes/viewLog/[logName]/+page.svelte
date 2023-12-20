@@ -32,6 +32,11 @@
 		console.log(deleteResponse);
 	}
 
+    const reloadLog = async (logName: string) => {
+        logContent = await getLog(logName);
+        scrollToBottom();
+    }
+
 	onMount(async () => {
 		console.log(logName);
 		logContent = await getLog(logName);
@@ -50,4 +55,5 @@
     {logContent}
 </pre>
 
+<button on:click={() => reloadLog(logName)}>Reload</button>
 <button on:click={() => clearLog(logName)}>Clear log</button>
