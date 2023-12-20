@@ -31,10 +31,10 @@ sudo mkfs.exfat -n TeslaCam /vusb/TeslaCam
 mkdir /mnt/TeslaCam
 
 # Configure
-cd /bin/node-teslausb/worker/src/configure && npm i && node .
+cd /bin/node-teslausb/src/worker/configure && npm i && node .
 
 # Install required modules for worker
-cd /bin/node-teslausb/worker/src && npm i
+cd /bin/node-teslausb/src/worker && npm i
 
 # Create log directory
 mkdir /logs
@@ -48,7 +48,7 @@ DefaultDependencies=no
 [Service]
 Type=simple
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/node /bin/node-teslausb/worker/index.js
+ExecStart=/usr/bin/node /bin/node-teslausb/src/worker/index.js
 WorkingDirectory=/bin/node-teslausb
 StandardOutput=append:/logs/worker.log
 StandardError=inherit
