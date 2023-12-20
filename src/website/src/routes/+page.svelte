@@ -5,7 +5,7 @@
 
 	async function add() {
 		const response = await fetch('/api/dashboard', {
-			method: 'POST',
+			method: 'GET',
 			body: JSON.stringify({ a, b }),
 			headers: {
 				'content-type': 'application/json'

@@ -1,17 +1,12 @@
-import { error } from '@sveltejs/kit';
+import { json, text } from '@sveltejs/kit';
 
+export async function POST({ request }) {
+	const { a, b } = await request.json();
+	return json(a + b);
+}
+
+// This handler will respond to PUT, PATCH, DELETE, etc.
 /** @type {import('./$types').RequestHandler} */
-export function GET({ url }) {
-	const min = Number(url.searchParams.get('min') ?? '0');
-	const max = Number(url.searchParams.get('max') ?? '1');
-
-	const d = max - min;
-
-	if (isNaN(d) || d < 0) {
-		error(400, 'min and max must be numbers, and min must be less than max');
-	}
-
-	const random = min + Math.random() * d;
-
-	return new Response(String(random));
+export async function fallback({ request }) {
+	return text(`I caught your ${request.method} request!`);
 }
