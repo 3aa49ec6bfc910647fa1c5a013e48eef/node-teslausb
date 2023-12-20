@@ -4,6 +4,10 @@ defaults:
     run:
       working-directory: src/website
 
+permissions:
+  contents: write
+  actions: read
+
 on:
   push:
     branches:
