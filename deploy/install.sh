@@ -1,6 +1,6 @@
 # Install git and clone the repo to the local system
 # TODO: Make this a better process in future
-apt update && apt install git -y
+apt update && apt install git jq -y
 git clone https://github.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb.git /bin/node-teslausb
 
 # Install nodejs

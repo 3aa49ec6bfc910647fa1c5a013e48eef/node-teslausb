@@ -64,7 +64,7 @@ jobs:
         with:
           files: build/website/**
           tag_name: ${{ github.run_id }}
-          name: Release ${{ github.run_id }}
+          name: node-teslausb-website-${{ github.run_id }}
           body: "Release of build ${{ github.run_id }}"
           draft: false
           prerelease: false
