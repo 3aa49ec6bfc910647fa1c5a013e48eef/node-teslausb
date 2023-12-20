@@ -56,6 +56,7 @@ const processInterval = async () => {
         } catch (error) {
             errorWithTimestamp("Error unmounting TeslaCam:", error);
         }
+        logWithTimestamp(`Executed copy, will not attempt for another ${config.delayBetweenCopyRetryInSeconds} seconds`);
         state.lastCopyDate = Date.now();
     }
 }

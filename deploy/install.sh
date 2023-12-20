@@ -72,6 +72,9 @@ systemctl daemon-reload
 # Create TeslaCam folder on USB volume
 sudo mount -o rw /vusb/TeslaCam /mnt/TeslaCam && mkdir /mnt/TeslaCam/TeslaCam && sudo umount /mnt/TeslaCam
 
+# Install website
+sudo chmod +x /bin/node-teslausb/deploy/install-website.sh && sudo /bin/node-teslausb/deploy/install-website.sh
+
 # We're done
 reboot
 

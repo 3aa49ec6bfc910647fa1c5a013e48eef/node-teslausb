@@ -26,11 +26,15 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
+# Install website
+sudo chmod +x /bin/node-teslausb/deploy/install-website.sh && sudo /bin/node-teslausb/deploy/install-website.sh
+
 systemctl daemon-reload
 
 echo "Restarting node-teslausb service..."
 
 systemctl restart node-teslausb
+systemctl restart node-teslausb-www
 
 # journalctl -u node-teslausb.service
 

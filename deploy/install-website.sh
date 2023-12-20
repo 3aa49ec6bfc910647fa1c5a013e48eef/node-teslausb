@@ -4,12 +4,12 @@
 # npm i
 # npm run build
 
-export USER="3aa49ec6bfc910647fa1c5a013e48eef"
-export REPO="node-teslausb"
-export FILENAME="website.zip"
+USER="3aa49ec6bfc910647fa1c5a013e48eef"
+REPO="node-teslausb"
+FILENAME="website.zip"
 
 # Fetch the latest release asset URL
-export ASSET_URL=$(curl -s https://api.github.com/repos/$USER/$REPO/releases/latest \
+ASSET_URL=$(curl -s https://api.github.com/repos/$USER/$REPO/releases/latest \
 | jq -r ".assets[] | select(.name == \"$FILENAME\") | .browser_download_url")
 
 # Check if the URL is valid
@@ -63,8 +63,9 @@ EOF
 
 # Enable the service
 systemctl enable node-teslausb-www.service
-# Not sure if this next line is needed
-systemctl restart node-teslausb-www.service
+
+# Restart website (need to test whether this will just start if not running)
+systemctl restart node-teslausb-www
 
 # Refresh the systemd daemon
 systemctl daemon-reload
