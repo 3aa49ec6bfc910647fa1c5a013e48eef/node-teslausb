@@ -13,7 +13,7 @@ DefaultDependencies=no
 Type=simple
 ExecStart=PORT=80 /usr/bin/node /bin/node-teslausb/build/website/index.js
 WorkingDirectory=/bin/node-teslausb
-StandardOutput=append:/logs/node-teslausb-www.log
+StandardOutput=append:/logs/website.log
 StandardError=inherit
 Restart=always
 
