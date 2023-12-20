@@ -32,8 +32,9 @@ sudo chmod +x /bin/node-teslausb/deploy/install-website.sh && sudo /bin/node-tes
 systemctl daemon-reload
 
 echo "Restarting node-teslausb service..."
-
 systemctl restart node-teslausb
+
+echo "Restarting node-teslausb-www service..."
 systemctl restart node-teslausb-www
 
 # journalctl -u node-teslausb.service
