@@ -1,12 +1,8 @@
 name: Build and Release - Website
 
-defaults:
-  run:
-    working-directory: src/website
-
-permissions:
-  contents: write
-  actions: read
+# permissions:
+#   contents: write
+#   actions: read
 
 on:
   push:
@@ -30,9 +26,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+        working-directory: src/website
 
       - name: Build
         run: npm run build
+        working-directory: src/website
         env:
           CI: true
 
