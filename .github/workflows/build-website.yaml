@@ -1,8 +1,8 @@
 name: Build and Release - Website
 
 defaults:
-    run:
-      working-directory: src/website
+  run:
+    working-directory: src/website
 
 permissions:
   contents: write
@@ -19,7 +19,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -41,8 +40,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: website
-          path: |
-            build/website/**
+          path: build/website/**
   
   release:
     needs: build
@@ -56,6 +54,9 @@ jobs:
         with:
           name: website
           path: build/website
+
+      - name: List files in build/website
+        run: ls -R build/website
   
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v1
@@ -68,4 +69,3 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
