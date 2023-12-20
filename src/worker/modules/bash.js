@@ -3,18 +3,22 @@ import util from 'util';
 import { exec } from 'child_process';
 
 // TODO: Fix stdout / stderr output in log files
-export const executeBashCommand = async (command) => {
+export const executeBashCommand = async (command, outputToConsole = true) => {
     try {
         const { stdout, stderr } = await util.promisify(exec)(command);
-        logWithTimestamp(`stdout: ${stdout}`);
+        if (outputToConsole) {
+            logWithTimestamp(`stdout: ${stdout}`);
+        }
 
-        if (stderr) {
+        if (stderr && outputToConsole) {
             errorWithTimestamp(`stderr: ${stderr}`);
         }
 
         return stdout;
     } catch (error) {
-        errorWithTimestamp(`Error: ${error.message}`);
+        if (outputToConsole) {
+            errorWithTimestamp(`Error: ${error.message}`);
+        }
         throw error;
     }
 };

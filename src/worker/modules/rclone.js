@@ -1,4 +1,3 @@
-import path from 'path';
 import ini from 'ini';
 import { logWithTimestamp, errorWithTimestamp } from './log.js';
 import fs from 'fs';
@@ -21,6 +20,6 @@ export const rcloneCopy = async (sourcePath, rcloneConfig, destinationPath) => {
         return
     }
     logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
-    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`)
+    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -vv --transfers=1 2>&1 | tee -a /logs/rclone.log`, false)
 
 }
