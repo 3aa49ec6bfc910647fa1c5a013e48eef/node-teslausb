@@ -1,5 +1,5 @@
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, unlinkSync } from 'fs';
 import { logNameToPathMapping } from '$lib/constants';
 
 const getLogContent = (logName: string): string => {
@@ -16,6 +16,19 @@ const getLogContent = (logName: string): string => {
     }
 };
 
+const deleteLogFile = (logName: string | undefined): void => {
+    const logPath = logNameToPathMapping[logName ?? ""];
+    if (!logPath || !existsSync(logPath)) {
+        return;
+    }
+
+    try {
+        unlinkSync(logPath);
+    } catch (err) {
+        console.error(`Error deleting file: ${err}`);
+    }
+}
+
 export const GET: RequestHandler = async (event: RequestEvent) => {
     const logName = event.params.logName;
 	const logContent = logName !== undefined ? getLogContent(logName) : "";
@@ -27,3 +40,16 @@ export const GET: RequestHandler = async (event: RequestEvent) => {
         }
     });
 };
+
+export const DELETE: RequestHandler = async (event: RequestEvent) => {
+    const logName = event.params.logName;
+
+    deleteLogFile(logName);
+
+    return new Response(JSON.stringify({ message: `OK` }), {
+        status: 200,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+}
