@@ -41,7 +41,7 @@ EOF
 # Enable the service
 systemctl enable node-teslausb-www.service
 # Not sure if this next line is needed
-systemctl start node-teslausb-www.service
+systemctl restart node-teslausb-www.service
 
 # Refresh the systemd daemon
 systemctl daemon-reload

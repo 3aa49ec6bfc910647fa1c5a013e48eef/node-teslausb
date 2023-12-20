@@ -26,6 +26,8 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
+systemctl daemon-reload
+
 echo "Restarting node-teslausb service..."
 
 systemctl restart node-teslausb

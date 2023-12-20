@@ -46,7 +46,7 @@ const processInterval = async () => {
                 config.paths.savedClips,
             ];
             for (const path of paths) {
-                await rcloneCopyWithProgress(path);
+                await rcloneCopyWithProgress(path, config.archive.rcloneConfig, config.archive.destinationPath);
             }
         } catch (error) {
             errorWithTimestamp("Error copying TeslaCam:", error);

@@ -5,14 +5,14 @@ import { executeBashCommand } from './bash.js';
 
 import { clearInterval, setInterval } from 'timers';
 
-export const rcloneCopyWithProgress = async (path) => {
+export const rcloneCopyWithProgress = async (path, rcloneConfig, destinationPath) => {
     const intervalId = setInterval(() => {
         logWithTimestamp("Copying files...");
         // Add something useful here, e.g. giving percentage complete, transfer speed, time remaining
     }, 60000); // 60000 ms = 1 minute
 
     try {
-        await rcloneCopy(path, config.archive.rcloneConfig, config.archive.destinationPath);
+        await rcloneCopy(path, rcloneConfig, destinationPath);
     } finally {
         clearInterval(intervalId);
     }

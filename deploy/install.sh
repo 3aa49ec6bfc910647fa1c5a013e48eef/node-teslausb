@@ -61,7 +61,7 @@ EOF
 # Enable the service
 systemctl enable node-teslausb.service
 # Not sure if this next line is needed
-systemctl start node-teslausb.service
+systemctl restart node-teslausb.service
 
 # Refresh the systemd daemon
 systemctl daemon-reload
