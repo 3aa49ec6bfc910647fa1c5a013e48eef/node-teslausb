@@ -14,32 +14,36 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install Dependencies
-        run: npm install
-        working-directory: src/website
-
-      - name: Build
-        run: npm run build
-        working-directory: src/website
-        env:
-          CI: true
-
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: website
-          path: build/website/**
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v3
   
+        - name: Set up Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '20'
+  
+        - name: Install Dependencies
+          run: npm install
+          working-directory: src/website
+  
+        - name: Build
+          run: npm run build
+          working-directory: src/website
+          env:
+            CI: true
+  
+        - name: Zip Build Artifacts
+          run: zip -r /website.zip build/website
+          working-directory: src/website
+  
+        - name: Archive Production Artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: website
+            path: website.zip
+
   release:
     needs: build
     runs-on: ubuntu-latest
