@@ -36,10 +36,11 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Clean up the install and configuration process
 - [ ] Package the project properly (e.g. NPM)
 - [ ] Add lifecycle management for destination (retention policy etc)
-- [ ] Add web server for configuration, status and statistics
+- [ ] Add web server for configuration (managing rclone, network settings), status (system, network, copy, usb host) and statistics (uptime, copy, storage)
 - [ ] Add functionality to handle scenarios such as keeping car awake for transfers
 - [ ] Add hotspot functionality to allow devices to connect to the device and browse the SD card using samba
 - [ ] Add support for secondary wifi networks (e.g. so that it can be hot-spotted to a phone while away from home network)
 - [ ] Get all relevant information included in logs
 - [ ] Backup and restore config
 - [ ] Flash LED to represent different states
+- [ ] Add support for saving lock chimes
