@@ -7,7 +7,7 @@ import { clearInterval, setInterval } from 'timers';
 
 export const rcloneCopyWithProgress = async (path, rcloneConfig, destinationPath) => {
     const intervalId = setInterval(() => {
-        logWithTimestamp("Copying files...");
+        logWithTimestamp("Copying files, check rclone.log for status...");
         // Add something useful here, e.g. giving percentage complete, transfer speed, time remaining
     }, 60000); // 60000 ms = 1 minute
 

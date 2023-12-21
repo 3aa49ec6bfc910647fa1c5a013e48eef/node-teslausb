@@ -3,11 +3,12 @@
 	import { onMount } from 'svelte';
 
 	let logContent: string = '';
+	let isLoading = true;
 
-	// Accessing the parameter
 	$: logName = $page.params.logName;
 
 	async function getLog(logName: string) {
+		isLoading = true;
 		const response = await fetch(`/api/logFiles/${logName}`, {
 			method: 'GET',
 			headers: {
@@ -16,7 +17,8 @@
 		});
 
 		const logContent = await response.json();
-		console.log(logContent);
+		// console.log(logContent);
+		isLoading = false;
 		return logContent.content;
 	}
 
@@ -29,7 +31,8 @@
 		});
 
 		const deleteResponse = await response.json();
-		console.log(deleteResponse);
+		// console.log(deleteResponse);
+		reloadLog(logName);
 	}
 
     const reloadLog = async (logName: string) => {
@@ -42,6 +45,7 @@
 		logContent = await getLog(logName);
 		console.log(logContent);
         scrollToBottom();
+
 	});
 
 	const scrollToBottom = () => {
@@ -51,6 +55,12 @@
 
 <h1>Log file: {logName}</h1>
 
+{#if isLoading}
+	<p>Loading...</p>
+{/if}
+{#if !isLoading && logContent === ''}
+	<p>Log is empty.</p>
+{/if}
 <pre>
     {logContent}
 </pre>

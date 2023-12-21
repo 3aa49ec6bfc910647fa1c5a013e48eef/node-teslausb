@@ -17,20 +17,22 @@ const getLogContent = (logName: string): string => {
     }
 };
 
-const deleteLogFile = (logName: string | undefined): void => {
-    const logPath = logNameToPathMapping[logName ?? ""];
-    if (!logPath || !existsSync(logPath)) {
-        return;
-    }
+// const deleteLogFile = (logName: string | undefined): void => {
+//     const logPath = logNameToPathMapping[logName ?? ""];
+//     if (!logPath || !existsSync(logPath)) {
+//         return;
+//     }
 
-    try {
-        unlinkSync(logPath);
-    } catch (err) {
-        console.error(`Error deleting file: ${err}`);
-    }
-}
+//     try {
+//         unlinkSync(logPath);
+//     } catch (err) {
+//         console.error(`Error deleting file: ${err}`);
+//     }
+// }
 
 const clearLogFile = (logPath: string | undefined) => {
+
+    console.log("clearLogFile:",logPath)
 
     if (!logPath || !existsSync(logPath)) {
         return;
@@ -58,10 +60,10 @@ export const GET: RequestHandler = async (event: RequestEvent) => {
 };
 
 export const DELETE: RequestHandler = async (event: RequestEvent) => {
-    const logName = event.params.logName;
+    const logName = event.params.logName ?? "";
+    const logPath = logNameToPathMapping[logName];
 
-    // deleteLogFile(logName);
-    clearLogFile(logName);
+    clearLogFile(logPath);
 
     return new Response(JSON.stringify({ message: `OK` }), {
         status: 200,
