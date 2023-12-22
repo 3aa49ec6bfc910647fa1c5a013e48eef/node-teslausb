@@ -30,6 +30,12 @@ export const mountUsbDriveToHost = async () => {
     await executeBashCommand("sudo modprobe g_mass_storage file=/vusb/TeslaCam")
 }
 
+export const runFskOnVirtualDisk = async () => {
+    logWithTimestamp("Running fsck on virtual disk, just in case")
+    await executeBashCommand("sudo fsck -y /vusb/TeslaCam")
+}
+
+
 // Not in use - leaving for now as it may be useful later
 // async function listFolderContents(folderPath, recursive = false) {
 //     let entries = [];
