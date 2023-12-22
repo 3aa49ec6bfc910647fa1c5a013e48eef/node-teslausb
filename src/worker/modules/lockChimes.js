@@ -1,5 +1,6 @@
 import { logWithTimestamp } from "./log.js";
 import { mountTeslaCamAsReadWrite, mountUsbDriveToHost, unmountTeslaCam, unmountUsbDriveFromHost } from "./storage.js";
+import { executeBashCommand } from "./bash.js";
 import fs from 'fs';
 
 export const checkLockChime = async () => {
@@ -18,9 +19,9 @@ export const checkLockChime = async () => {
 
 const installLockChime = async () => {
     unmountTeslaCam();
-    mountTeslaCamAsReadWrite();
     unmountUsbDriveFromHost();
+    mountTeslaCamAsReadWrite();
     logWithTimestamp(`Copying LockChime.wav to USB drive`)
-    await executeBashCommand(`cp /tmp/LockChime.wav /mnt/usb/TeslaCam/SentryClips/`)
+    await executeBashCommand(`cp /tmp/LockChime.wav /mnt/TeslaCam/`)
     mountUsbDriveToHost();
 }
