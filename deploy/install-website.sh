@@ -57,12 +57,15 @@ cat << EOF >> /bin/node-teslausb/build/website/package.json
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
+  }
 }
 EOF
 
 cd /bin/node-teslausb/build/website
-npm i cheerio
+npm i
 
 # Enable the service
 systemctl enable node-teslausb-www.service

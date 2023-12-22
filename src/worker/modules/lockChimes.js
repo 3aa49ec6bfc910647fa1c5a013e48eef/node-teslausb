@@ -1,5 +1,6 @@
 import { logWithTimestamp } from "./log.js";
 import { mountTeslaCamAsReadWrite, mountUsbDriveToHost, unmountTeslaCam, unmountUsbDriveFromHost } from "./storage.js";
+import fs from 'fs';
 
 export const checkLockChime = async () => {
     const configPath = '/tmp/LockChime.wav';
