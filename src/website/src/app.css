@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 h1 {
-    @apply text-xl font-bold underline pb-2;
+    @apply text-xl font-bold pb-2;
 }
 
 h2 {
-    @apply text-lg font-bold pb-1 pt-4;
+    @apply text-lg font-bold pb-1 pt-2;
 }
 
 ul {

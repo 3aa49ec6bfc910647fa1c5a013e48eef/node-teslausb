@@ -70,7 +70,7 @@
 	});
 </script>
 
-<div class="p-5">
+<div class="p-2">
 	<h2>Log Files</h2>
 	{#if finishedApiCalls == true}
 		{#if logFiles.length == 0}
