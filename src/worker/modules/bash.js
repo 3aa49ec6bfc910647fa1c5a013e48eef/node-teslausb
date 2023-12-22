@@ -6,7 +6,7 @@ import { exec } from 'child_process';
 export const executeBashCommand = async (command, outputToConsole = true) => {
     try {
         const { stdout, stderr } = await util.promisify(exec)(command);
-        if (outputToConsole) {
+        if (stdout && outputToConsole) {
             logWithTimestamp(`stdout: ${stdout}`);
         }
 

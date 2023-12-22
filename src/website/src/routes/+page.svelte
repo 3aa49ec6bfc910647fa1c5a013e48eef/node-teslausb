@@ -71,44 +71,44 @@
 </script>
 
 <div class="p-5">
-
-<h1>node-teslausb</h1>
-
-<h2>Log Files</h2>
-{#if finishedApiCalls == true}
-	{#if logFiles.length == 0}
-		<p>No log files found.</p>
+	<h2>Log Files</h2>
+	{#if finishedApiCalls == true}
+		{#if logFiles.length == 0}
+			<p>No log files found.</p>
+		{:else}
+			<ul class="list-disc">
+				{#each logFiles as logFile}
+					<li><a href={`/viewLog/${logFile}`}>{logFile}</a></li>
+				{/each}
+			</ul>
+		{/if}
 	{:else}
-		<ul class="list-disc">
-			{#each logFiles as logFile}
-				<li><a href={`/viewLog/${logFile}`}>{logFile}</a></li>
-			{/each}
-		</ul>
+		<p>Loading...</p>
 	{/if}
-{:else}
-	<p>Loading...</p>
-{/if}
 
-{#if finishedApiCalls}
-  <h2>Lock Chimes</h2>
-  {#if lockChimes.length == 0}
-    <p>No lock chimes found.</p>
-  {:else}
-    <select bind:value={selectedUrl}>
-      {#each lockChimes as lockChime}
-        <option value={lockChime.url}>{lockChime.title}</option>
-      {/each}
-    </select>
-    <button on:click={installLockChime}>Install</button>
-  {/if}
-  <div class="text-sm pt-1">
-	  Visit <a href="https://teslapro.hu/lockchimes/">https://teslapro.hu/lockchimes/</a> to listen to lock sounds before installing.
-	  <p class="pt-2">
-	<i>Note: currently, installation will happen within 2 minutes if no data is being synced.  Otherwise it will run once the sync finishes.</i>
-	</p>		
-  </div>
-{/if}
-
+	{#if finishedApiCalls}
+		<h2>Lock Chimes</h2>
+		{#if lockChimes.length == 0}
+			<p>No lock chimes found.</p>
+		{:else}
+			<select bind:value={selectedUrl}>
+				{#each lockChimes as lockChime}
+					<option value={lockChime.url}>{lockChime.title}</option>
+				{/each}
+			</select>
+			<button on:click={installLockChime}>Install</button>
+		{/if}
+		<div class="text-sm pt-1">
+			Visit <a href="https://teslapro.hu/lockchimes/">https://teslapro.hu/lockchimes/</a> to listen
+			to lock sounds before installing.
+			<p class="pt-2">
+				<i
+					>Note: currently, installation will happen within 2 minutes if no data is being synced.
+					Otherwise it will run once the sync finishes.</i
+				>
+			</p>
+		</div>
+	{/if}
 </div>
 <!-- <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 

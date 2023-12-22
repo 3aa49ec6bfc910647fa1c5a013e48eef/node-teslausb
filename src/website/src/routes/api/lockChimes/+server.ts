@@ -67,6 +67,7 @@ async function readableStreamToBuffer(readable: ReadableStream<Uint8Array>): Pro
     const reader = readable.getReader();
     const chunks: Uint8Array[] = [];
 
+    //eslint-disable-next-line no-constant-condition
     while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -78,8 +79,9 @@ async function readableStreamToBuffer(readable: ReadableStream<Uint8Array>): Pro
 
 export async function GET({ request }) {
     const lockChimes = await getLockChimes();
+    const sortedLockChimes = lockChimes.sort((a, b) => a.title.localeCompare(b.title));
     // const logNames = Object.keys(logNameToPathMapping);
-    return json(lockChimes);
+    return json(sortedLockChimes);
 }
 
 export const POST: RequestHandler = async (event: RequestEvent) => {

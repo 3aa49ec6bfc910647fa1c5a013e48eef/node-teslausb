@@ -20,22 +20,6 @@ const setPermissions = (accessLevel = 755, path = '/etc/rc.local') => {
     });
 };
 
-const executeBashCommand = (command) => {
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error: ${error.message}`);
-            return;
-        }
-
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return;
-        }
-
-        console.log(`stdout: ${stdout}`);
-    });
-}
-
 const addDtOverlayToBootConfig = () => {
     const bootConfigPath = '/boot/config.txt';
 
