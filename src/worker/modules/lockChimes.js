@@ -1,5 +1,5 @@
-import { logWithTimestamp } from "./log";
-import { mountTeslaCamAsReadWrite, mountUsbDriveToHost, unmountTeslaCam, unmountUsbDriveFromHost } from "./storage";
+import { logWithTimestamp } from "./log.js";
+import { mountTeslaCamAsReadWrite, mountUsbDriveToHost, unmountTeslaCam, unmountUsbDriveFromHost } from "./storage.js";
 
 export const checkLockChime = async () => {
     const configPath = '/tmp/LockChime.wav';
@@ -10,7 +10,7 @@ export const checkLockChime = async () => {
 
     logWithTimestamp(`LockChime.wav installed, removing /tmp/LockChime.wav...`)
     await executeBashCommand(`rm /tmp/LockChime.wav`)
-    
+
     logWithTimestamp(`LockChime.wav removed.`)
 
 }
