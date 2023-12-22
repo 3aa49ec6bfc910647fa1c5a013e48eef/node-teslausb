@@ -13,7 +13,11 @@ export const mountTeslaCamAsReadWrite = async () => {
 
 export const unmountTeslaCam = async () => {
     logWithTimestamp("Unmounting TeslaCam")
-    await executeBashCommand("sudo umount /mnt/TeslaCam && systemctl daemon-reload")
+    try {
+        await executeBashCommand("sudo umount /mnt/TeslaCam && systemctl daemon-reload")
+    } catch (error) {
+        errorWithTimestamp("Unable to unmount TeslaCam, this is OK if it wasn't meant to be mounted.")
+    }
 }
 
 export const unmountUsbDriveFromHost = async () => {
