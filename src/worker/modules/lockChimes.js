@@ -18,10 +18,10 @@ export const checkLockChime = async () => {
 }
 
 const installLockChime = async () => {
-    unmountTeslaCam();
-    unmountUsbDriveFromHost();
-    mountTeslaCamAsReadWrite();
+    await unmountTeslaCam();
+    await unmountUsbDriveFromHost();
+    await mountTeslaCamAsReadWrite();
     logWithTimestamp(`Copying LockChime.wav to USB drive`)
-    await executeBashCommand(`cp /tmp/LockChime.wav /mnt/TeslaCam/`)
-    mountUsbDriveToHost();
+    await executeBashCommand(`cp /tmp/LockChime.wav /mnt/TeslaCam/LockChime.wav`)
+    await mountUsbDriveToHost();
 }
