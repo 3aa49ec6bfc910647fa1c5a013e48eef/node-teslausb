@@ -35,21 +35,23 @@
 		reloadLog(logName);
 	}
 
-    const reloadLog = async (logName: string) => {
-        logContent = await getLog(logName);
-        scrollToBottom();
-    }
+	const reloadLog = async (logName: string) => {
+		logContent = await getLog(logName);
+		scrollToBottom();
+	};
 
 	onMount(async () => {
 		console.log(logName);
 		logContent = await getLog(logName);
 		console.log(logContent);
-        scrollToBottom();
-
+		scrollToBottom();
 	});
 
+	// bit of a hack but might work
 	const scrollToBottom = () => {
-		window.scrollTo(0, document.body.scrollHeight);
+		setTimeout(() => {
+			window.scrollTo(0, document.body.scrollHeight);
+		}, 0);
 	};
 </script>
 

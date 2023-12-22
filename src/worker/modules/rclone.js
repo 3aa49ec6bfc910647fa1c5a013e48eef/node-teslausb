@@ -2,8 +2,8 @@ import ini from 'ini';
 import { logWithTimestamp, errorWithTimestamp } from './log.js';
 import fs from 'fs';
 import { executeBashCommand } from './bash.js';
-
 import { clearInterval, setInterval } from 'timers';
+import readLastLines from 'read-last-lines';
 
 export const rcloneCopyWithProgress = async (path, rcloneConfig, destinationPath) => {
     const intervalId = setInterval(() => {
@@ -36,6 +36,16 @@ export const rcloneCopy = async (sourcePath, rcloneConfig, destinationPath) => {
         return
     }
     logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
-    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -v --transfers=1 2>&1 | tee -a /logs/rclone.log`, false)
+    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -v --transfers=1 --use-json-log 2>&1 | tee -a /logs/rclone.log`, false)
 
 }
+
+export const getLastLineAsObject = async (filePath) => {
+    try {
+        const lastLine = await readLastLines.read(filePath, 1);
+        return JSON.parse(lastLine);
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+};

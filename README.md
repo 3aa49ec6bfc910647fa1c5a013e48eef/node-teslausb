@@ -12,8 +12,13 @@
 
 1. Raspberry Pi Zero 2 W (128GB SD card recommended).
 2. Any OS default image should work, but limited testing has occurred and only with [2023-12-11-raspios-bookworm-arm64-lite.img](https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz).
-3. SSH access enabled.
-4. ```rclone``` installed and configured with a profile named node-teslausb (test that your config is working using ```rclone mkdir node-teslausb:TeslaCam```).
+* _Install and run [Raspberry Pi Imager](https://www.raspberrypi.com/software/)_
+* _Select 'Raspberry Pi Zero 2 W' as device and then 'Use custom' for Operating System_
+* _Choose the 2023-12-11-raspios-bookworm-arm64-lite.img image_
+* _Select your storage device_
+3. SSH and wifi enabled.
+* _Configure SSH as well as the device name (e.g. node-teslausb.local) and your wifi network settings before writing to SD card (note: I had a lot of issues with password authentication and had to use a SSH key in order to login)_
+4. Once you have booted the device, install ```rclone``` via ```apt install rclone``` and configure it with a profile named node-teslausb (```rclone config```). Test that your config is working using ```rclone mkdir node-teslausb:TeslaCam```).
 
 ```
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install.sh)"
