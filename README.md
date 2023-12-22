@@ -35,7 +35,6 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Perform some actual testing to validate that it works and works reliably
 - [ ] Add support for using rclone providers other than SMB
 - [ ] Provide validation of rclone config during setup
-- [ ] Delete files at source once copied
 - [ ] Migrate from Javascript to TypeScript
 - [ ] Fix project structure
 - [ ] Clean up the install and configuration process
@@ -48,4 +47,4 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Get all relevant information included in logs
 - [ ] Backup and restore config
 - [ ] Flash LED to represent different states
-- [ ] Add support for saving lock chimes
+- [x] Add support for saving lock chimes
