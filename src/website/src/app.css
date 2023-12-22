@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+    @apply text-xl font-bold underline pb-2;
+}
+
+h2 {
+    @apply text-lg font-bold pb-1 pt-4;
+}
+
+ul {
+    @apply list-disc list-inside;
+}
+
+a {
+    @apply text-blue-500 underline;
+}
+
+select {
+    @apply border border-gray-300 py-1;
+}
+
+button {
+    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded;
+}

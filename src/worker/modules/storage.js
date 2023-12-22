@@ -2,13 +2,28 @@ import { logWithTimestamp, errorWithTimestamp } from "./log.js"
 import { executeBashCommand } from "./bash.js"
 
 export const mountTeslaCamAsReadOnly = async () => {
-    logWithTimestamp("Mounting TeslaCam")
+    logWithTimestamp("Mounting TeslaCam as ro")
     await executeBashCommand("sudo mount -o ro /vusb/TeslaCam /mnt/TeslaCam && systemctl daemon-reload")
+}
+
+export const mountTeslaCamAsReadWrite = async () => {
+    logWithTimestamp("Mounting TeslaCam as rw - this can corrupt data if also being written to the by the host")
+    await executeBashCommand("sudo mount -o rw /vusb/TeslaCam /mnt/TeslaCam && systemctl daemon-reload")
 }
 
 export const unmountTeslaCam = async () => {
     logWithTimestamp("Unmounting TeslaCam")
     await executeBashCommand("sudo umount /mnt/TeslaCam && systemctl daemon-reload")
+}
+
+export const unmountUsbDriveFromHost = async () => {
+    logWithTimestamp("Unmounting USB drive from host")
+    await executeBashCommand("sudo rmmod g_mass_storage")
+}
+
+export const mountUsbDriveToHost = async () => {
+    logWithTimestamp("Mounting USB drive to host")
+    await executeBashCommand("sudo modprobe g_mass_storage file=/vusb/TeslaCam")
 }
 
 // Not in use - leaving for now as it may be useful later

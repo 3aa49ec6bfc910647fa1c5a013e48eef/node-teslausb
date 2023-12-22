@@ -4,6 +4,7 @@ import { getRcloneConfig, rcloneCopyWithProgress } from './modules/rclone.js';
 import { logWithTimestamp, errorWithTimestamp } from './modules/log.js';
 import { restartWifi, checkIfArchiveIsReachable } from './modules/network.js';
 import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './modules/storage.js';
+import { checkLockChime } from './modules/lockChimes.js';
 
 const config = {
     archive: {
@@ -29,6 +30,8 @@ const processInterval = async () => {
     logWithTimestamp("Processing");
 
     // TODO: add a health check that checks - if on wifi, but no wifi clients, and cannot connect to source, or copy job has been running for 2+ hrs (once refactored to run 1 rclone job per folder), then reboot
+
+    await checkLockChime();
 
     const archiveReachable = await checkIfArchiveIsReachable(config.archive.server);
     if (archiveReachable === false) {
