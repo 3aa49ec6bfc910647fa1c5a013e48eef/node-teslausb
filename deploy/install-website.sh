@@ -61,6 +61,9 @@ cat << EOF >> /bin/node-teslausb/build/website/package.json
 }
 EOF
 
+cd /bin/node-teslausb/build/website
+npm i cheerio
+
 # Enable the service
 systemctl enable node-teslausb-www.service
 
