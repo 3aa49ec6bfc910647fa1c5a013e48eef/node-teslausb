@@ -114,7 +114,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-  
+
+        
+      - name: Download Setup Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: setup
+          path: build/setup
+
       - name: Download Worker Artifact
         uses: actions/download-artifact@v3
         with:
