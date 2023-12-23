@@ -23,6 +23,7 @@ if [ -z "$ASSET_URL" ]; then
 fi
 
 # Download the file to /tmp/worker.zip
+echo "Downloading worker.zip..."
 curl -L $ASSET_URL -o /tmp/worker.zip
 
 # Remove existing worker directory
