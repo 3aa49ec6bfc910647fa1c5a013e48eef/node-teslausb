@@ -20,6 +20,7 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
+    "@types/ping": "^0.4.4",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   }

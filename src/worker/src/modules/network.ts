@@ -13,6 +13,8 @@ export const checkIfArchiveIsReachable = async () => {
     const config = getRcloneConfig()
     const connectivityTestType = getConnectivityTestType(config)
 
+    console.log('Performing connectivity test for:', connectivityTestType)
+
     if (connectivityTestType === ConnectivityTestType.internetConnected) {
         return await testInternetConnected()
     }
@@ -54,8 +56,8 @@ const testInternetConnected = async () => {
 }
 
 enum ConnectivityTestType {
-    pingHost = "pingHost",
-    internetConnected = "internetConnected",
+    pingHost,
+    internetConnected,
 }
 
 const getConnectivityTestType = (config: any) => {
