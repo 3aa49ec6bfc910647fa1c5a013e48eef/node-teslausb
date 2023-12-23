@@ -34,9 +34,9 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [ ] Add support for using rclone providers other than SMB
 - [ ] Provide validation of rclone config during setup
 - [x] Migrate from Javascript to TypeScript
-- [ ] Fix project structure
+- [x] Fix project structure
 - [x] Clean up the install process
-- [ ] Clean up the configuration process
+- [x] Clean up the configuration process
 - [x] Package the project properly
 - [ ] Add lifecycle management for destination (retention policy etc)
 - [ ] Add web server for configuration (managing rclone, network settings), status (system, network, copy, usb host) and statistics (uptime, copy, storage)
