@@ -1,9 +1,5 @@
 # sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install-website.sh)"
 
-# cd /bin/node-teslausb/src/website
-# npm i
-# npm run build
-
 USER="3aa49ec6bfc910647fa1c5a013e48eef"
 REPO="node-teslausb"
 FILENAME="website.zip"
@@ -46,7 +42,7 @@ WantedBy=multi-user.target
 EOF
 
 cd /bin/node-teslausb/build/website
-npm i --production
+npm i --omit=dev
 
 # Enable the service
 systemctl enable node-teslausb-www.service
