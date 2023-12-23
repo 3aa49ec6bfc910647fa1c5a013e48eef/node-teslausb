@@ -1,4 +1,4 @@
-name: Build and Release - Website & W
+name: Build and Release - Website & Worker
 
 permissions:
   contents: write
@@ -35,7 +35,7 @@ jobs:
           CI: true
 
       - name: Zip Build Artifacts
-        run: zip -r worker.zip dist/worker
+        run: zip -r worker.zip build/worker
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3
