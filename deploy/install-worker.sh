@@ -20,7 +20,7 @@ echo "Downloading worker.zip..."
 curl -L $ASSET_URL -o /tmp/worker.zip
 
 # Remove existing worker directory
-sudo rm -rf /bin/node-teslausb/build/worker
+# sudo rm -rf /bin/node-teslausb/build/worker
 
 # Extract the file to /bin/node-teslausb/build/worker (this is risky to unzip to root, fix later)
 unzip -o /tmp/worker.zip -d /bin/node-teslausb

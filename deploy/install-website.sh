@@ -18,7 +18,7 @@ fi
 curl -L $ASSET_URL -o /tmp/website.zip
 
 # Remove existing website directory
-sudo rm -rf /bin/node-teslausb/build/website
+# sudo rm -rf /bin/node-teslausb/build/website
 
 # Extract the file to /bin/node-teslausb/build/website (this is risky to unzip to root, fix later)
 unzip -o /tmp/website.zip -d /bin/node-teslausb
