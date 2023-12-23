@@ -35,7 +35,7 @@ jobs:
           CI: true
 
       - name: Zip Build Artifacts
-        run: zip -r worker.zip build/worker
+        run: zip -r worker.zip dist/worker
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3
