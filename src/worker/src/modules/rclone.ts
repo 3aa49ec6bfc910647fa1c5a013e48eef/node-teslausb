@@ -36,7 +36,7 @@ export const rcloneCopy = async (sourcePath, rcloneConfig, destinationPath) => {
         return
     }
     logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
-    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -v --transfers=1 --use-json-log 2>&1 | tee -a /logs/rclone.log`, false)
+    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -v --transfers=1 --checkers=1 --use-json-log 2>&1 | tee -a /logs/rclone.log`, false)
 
 }
 
