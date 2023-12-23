@@ -45,27 +45,8 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-cat << EOF >> /bin/node-teslausb/build/website/package.json
-{
-  "name": "website",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.12"
-  }
-}
-EOF
-
 cd /bin/node-teslausb/build/website
-npm i
+npm i --production
 
 # Enable the service
 systemctl enable node-teslausb-www.service

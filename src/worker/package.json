@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup"
+    "build": "tsup && npm run copy-package-json",
+    "copy-package-json": "cp package.json ../../build/worker/package.json"
   },
   "keywords": [],
   "author": "",

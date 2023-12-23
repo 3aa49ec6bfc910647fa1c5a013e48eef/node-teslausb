@@ -34,7 +34,7 @@ mkdir /mnt/TeslaCam
 cd /bin/node-teslausb/src/worker/configure && npm i && node .
 
 # Install required modules for worker
-cd /bin/node-teslausb/src/worker && npm i
+cd /bin/node-teslausb/build/worker && npm i --production
 
 # Create log directory
 mkdir /logs
@@ -48,7 +48,7 @@ DefaultDependencies=no
 [Service]
 Type=simple
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/node /bin/node-teslausb/src/worker/index.js
+ExecStart=/usr/bin/node /bin/node-teslausb/build/worker/index.js
 WorkingDirectory=/bin/node-teslausb
 StandardOutput=append:/logs/worker.log
 StandardError=inherit

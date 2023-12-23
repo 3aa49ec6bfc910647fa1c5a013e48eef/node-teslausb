@@ -6,7 +6,7 @@
 cd /bin/node-teslausb
 git fetch --all
 git reset --hard origin/main
-cd /bin/node-teslausb/src/worker && npm i
+cd /bin/node-teslausb/build/worker && npm i --production
 
 cat << EOF > /lib/systemd/system/node-teslausb.service
 [Unit]
@@ -16,7 +16,7 @@ DefaultDependencies=no
 [Service]
 Type=simple
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/node /bin/node-teslausb/src/worker/index.js
+ExecStart=/usr/bin/node /bin/node-teslausb/build/worker/index.js
 WorkingDirectory=/bin/node-teslausb
 StandardOutput=append:/logs/worker.log
 StandardError=inherit
