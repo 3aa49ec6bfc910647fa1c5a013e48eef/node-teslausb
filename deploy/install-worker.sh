@@ -46,6 +46,8 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
+echo "Configuring worker service..."
+
 # Enable the service
 systemctl enable node-teslausb.service
 
@@ -54,3 +56,5 @@ systemctl restart node-teslausb
 
 # Refresh the systemd daemon
 systemctl daemon-reload
+
+echo "Worker service configured"

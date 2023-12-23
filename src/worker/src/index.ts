@@ -44,7 +44,7 @@ const processInterval = async () => {
         return;
     }
 
-    const archiveReachable = await checkIfArchiveIsReachable(config.archive.server);
+    const archiveReachable = await checkIfArchiveIsReachable();
     if (archiveReachable === false) {
         await restartWifi();
     } else if (state.lastCopyDate === undefined || ((new Date()).getTime() > (new Date(state.lastCopyDate)).getTime() + config.delayBetweenCopyRetryInSeconds * 1000)) {

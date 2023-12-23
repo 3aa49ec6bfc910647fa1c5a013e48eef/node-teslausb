@@ -44,6 +44,8 @@ EOF
 cd /bin/node-teslausb/build/website
 npm i --omit=dev
 
+echo "Configuring website service..."
+
 # Enable the service
 systemctl enable node-teslausb-www.service
 
@@ -52,3 +54,5 @@ systemctl restart node-teslausb-www
 
 # Refresh the systemd daemon
 systemctl daemon-reload
+
+echo "Website service configured"
