@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Editor from 'cl-editor/src/Editor.svelte';
+	import type { Readable } from 'svelte/store';
+	import { createEditor, Editor, EditorContent } from 'svelte-tiptap';
+    import StarterKit from '@tiptap/starter-kit';
 	import { page } from '$app/stores';
 
 	let isLoading = true;
@@ -24,13 +26,8 @@
 
 	// let json: string = ""
 
-	let html = 'Loading content...';
-
-	let actions = ['removeFormat'];
-	let height = 'auto';
-
 	const save = () => {
-		console.log(html);
+		console.log($editor);
 	};
 
 	const revert = () => {
@@ -41,19 +38,24 @@
 		console.log('load');
 	};
 
+	let editor: Readable<Editor>;
+
 	onMount(async () => {
 		console.log('onMount');
-		let json = await getConfig(configName);
-		html = json;
+        let configContent = await getConfig(configName)
+		editor = createEditor({
+			extensions: [StarterKit],
+			content: configContent
+		});
 	});
 </script>
 
-<div class="p-2">
-	{#if html !== 'Loading content...'}
-		<Editor {html} on:change={(evt) => (html = evt.detail)} {actions} {height} />
-	{:else}
-		<p>Loading config...</p>
-	{/if}
+<div class="p-2 whitespace-pre-wrap">
+	<!-- {#if html !== 'Loading content...'} -->
+		<EditorContent editor={$editor} />
+	<!-- {:else} -->
+		<!-- <p>Loading config...</p> -->
+	<!-- {/if} -->
 
 	<button class="mt-2 mr-2" on:click={save}>Save</button>
 	<button class="mt-2 bg-gray-500" on:click={revert}>Revert</button>
