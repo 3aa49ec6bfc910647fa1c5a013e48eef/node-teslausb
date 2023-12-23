@@ -3,6 +3,30 @@
 apt update && apt install git jq -y
 git clone https://github.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb.git /bin/node-teslausb
 
+# # Re-activate this later
+# USER="3aa49ec6bfc910647fa1c5a013e48eef"
+# REPO="node-teslausb"
+# FILENAME="worker.zip"
+
+# # Fetch the latest release asset URL
+# ASSET_URL=$(curl -s https://api.github.com/repos/$USER/$REPO/releases/latest \
+# | jq -r ".assets[] | select(.name == \"$FILENAME\") | .browser_download_url")
+
+# # Check if the URL is valid
+# if [ -z "$ASSET_URL" ]; then
+#     echo "Asset URL not found."
+#     exit 1
+# fi
+
+# # Download the file to /tmp/worker.zip
+# curl -L $ASSET_URL -o /tmp/worker.zip
+
+# # Remove existing worker directory
+# sudo rm -rf /bin/node-teslausb/build/worker
+
+# # Extract the file to /bin/node-teslausb/build/worker (this is risky to unzip to root, fix later)
+# unzip -o /tmp/worker.zip -d /bin/node-teslausb
+
 # Install nodejs
 apt install nodejs npm rclone -y
 
