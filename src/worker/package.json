@@ -1,11 +1,12 @@
 {
-  "name": "teslausb",
+  "name": "node-teslausb",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +17,9 @@
     "ping": "^0.4.4",
     "read-last-lines": "^1.8.0",
     "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
   }
 }

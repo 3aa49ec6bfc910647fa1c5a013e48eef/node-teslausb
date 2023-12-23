@@ -17,12 +17,18 @@ const config = {
         savedClips: "/mnt/TeslaCam/TeslaCam/SavedClips",
     },
     delayBetweenCopyRetryInSeconds: 3600,
+    mainLoopIntervalInSeconds: 120,
 }
 
-const state = {
+interface WorkerState {
+    errorCount: number;
+    lastCopyDate: Date | undefined;
+}
+
+const state: WorkerState = {
     errorCount: 0,
-    lastCopyDate: undefined
-};
+    lastCopyDate: undefined,
+}
 
 logWithTimestamp("Starting");
 
@@ -33,10 +39,15 @@ const processInterval = async () => {
 
     await checkLockChime();
 
+    if (config.archive.server === false) {
+        errorWithTimestamp(`rclone config file not found at '/root/.config/rclone/rclone.conf', run 'rclone config' to set up.`);
+        return;
+    }
+
     const archiveReachable = await checkIfArchiveIsReachable(config.archive.server);
     if (archiveReachable === false) {
         await restartWifi();
-    } else if (state.lastCopyDate === undefined || (Date.now() > state.lastCopyDate + config.delayBetweenCopyRetryInSeconds * 1000)) {
+    } else if (state.lastCopyDate === undefined || ((new Date()).getTime() > (new Date(state.lastCopyDate)).getTime() + config.delayBetweenCopyRetryInSeconds * 1000)) {
         logWithTimestamp("Connected to archive server, starting copy");
         try {
             await mountTeslaCamAsReadOnly();
@@ -60,7 +71,7 @@ const processInterval = async () => {
             errorWithTimestamp("Error unmounting TeslaCam:", error);
         }
         logWithTimestamp(`Executed copy, will not attempt for another ${config.delayBetweenCopyRetryInSeconds} seconds`);
-        state.lastCopyDate = Date.now();
+        state.lastCopyDate = new Date();
     }
 }
 
@@ -90,9 +101,11 @@ const main = async () => {
     } finally {
         isRunning = false;
         // Wait 2 minutes before running again
-        setTimeout(main, 120000);
+        setTimeout(main, config.mainLoopIntervalInSeconds * 1000);
     }
 };
 
 // Run immediately
-await main();
+(async () => {
+    await main();
+})();

@@ -22,7 +22,7 @@ export const rcloneCopyWithProgress = async (path, rcloneConfig, destinationPath
 export const getRcloneConfig = () => {
     const configPath = '/root/.config/rclone/rclone.conf';
     if (fs.existsSync(configPath) === false) {
-        throw new Error(`rclone config file not found at ${configPath}, need to run 'rclone config'`);
+        return { host: false };
     }
     const configContent = fs.readFileSync(configPath, 'utf-8');
     const config = ini.parse(configContent);
