@@ -1,6 +1,6 @@
 # sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install-website.sh)"
 
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/download-github-asset.sh)" -- website.zip /bin/node-teslausb
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/helpers/download-github-asset.sh)" -- website.zip /bin/node-teslausb
 
 echo "Installing required modules for website..."
 cd /bin/node-teslausb/build/website && npm i --omit=dev
