@@ -33,7 +33,7 @@ sudo mkfs.exfat -n TeslaCam /vusb/TeslaCam
 mkdir /mnt/TeslaCam
 
 # Configure
-cd /bin/node-teslausb/src/worker/configure && npm i && node .
+cd /bin/node-teslausb/src/worker/src/configure && npm i && node .
 
 # Create log directory
 mkdir /logs
