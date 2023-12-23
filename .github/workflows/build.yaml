@@ -9,9 +9,9 @@ on:
     branches:
       - main
     paths:
-      - 'src/website/**'
-      - 'src/worker/**'
-      - 'src/deploy/setup/**'
+      - 'website/**'
+      - 'worker/**'
+      - 'deploy/setup/**'
   workflow_dispatch:
 
 jobs:
@@ -28,11 +28,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-        working-directory: src/deploy/setup
+        working-directory: deploy/setup
 
       - name: Build
         run: npm run build
-        working-directory: src/deploy/setup
+        working-directory: deploy/setup
         env:
           CI: true
 
@@ -58,11 +58,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-        working-directory: src/worker
+        working-directory: worker
 
       - name: Build
         run: npm run build
-        working-directory: src/worker
+        working-directory: worker
         env:
           CI: true
 
@@ -88,11 +88,11 @@ jobs:
   
         - name: Install Dependencies
           run: npm install
-          working-directory: src/website
+          working-directory: website
   
         - name: Build
           run: npm run build
-          working-directory: src/website
+          working-directory: website
           env:
             CI: true
   
