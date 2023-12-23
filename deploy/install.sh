@@ -28,11 +28,8 @@ sudo mkfs.exfat -n TeslaCam /vusb/TeslaCam
 # Create mount point
 mkdir /mnt/TeslaCam
 
-# Install setup scripts
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/helpers/install-setup.sh)"
-
-# Configure
-cd /bin/node-teslausb/build/setup && npm i && node .
+# Run setup scripts (the ones that run in node)
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/helpers/setup.sh)"
 
 # Create log directory
 mkdir /logs
