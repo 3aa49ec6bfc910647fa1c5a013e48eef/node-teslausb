@@ -1,4 +1,4 @@
-name: Build and Release - Website
+name: Build and Release - Website & W
 
 permissions:
   contents: write
@@ -13,7 +13,37 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: src/worker
+
+      - name: Build
+        run: npm run build
+        working-directory: src/worker
+        env:
+          CI: true
+
+      - name: Zip Build Artifacts
+        run: zip -r worker.zip build/worker
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: worker
+          path: worker.zip
+
+  build-website:
       runs-on: ubuntu-latest
       steps:
         - name: Checkout Repository
@@ -44,7 +74,9 @@ jobs:
             path: website.zip
 
   release:
-    needs: build
+    needs:
+      - build-worker
+      - build-website
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -55,9 +87,14 @@ jobs:
         with:
           name: website
           path: build/website
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: worker
+          path: build/worker
 
-      - name: List files in build/website
-        run: ls -R build/website
+      # - name: List files in build/website
+      #   run: ls -R build/website
   
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v1
@@ -65,6 +102,17 @@ jobs:
           files: build/website/**
           tag_name: ${{ github.run_id }}
           name: node-teslausb-website-${{ github.run_id }}
+          body: "Release of build ${{ github.run_id }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/worker/**
+          tag_name: ${{ github.run_id }}
+          name: node-teslausb-worker-${{ github.run_id }}
           body: "Release of build ${{ github.run_id }}"
           draft: false
           prerelease: false
