@@ -69,7 +69,7 @@ const addModProbeToRcLocal = () => {
         fs.writeFileSync(filePath, rcLocalContent, 'utf-8');
 
         console.log('modprobe line added to rc.local successfully.');
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error:', error.message);
     }
 }

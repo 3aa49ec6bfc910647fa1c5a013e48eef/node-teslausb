@@ -1,4 +1,4 @@
-name: Build and Release - Website & Worker
+name: Build and Upload Release Artifacts
 
 permissions:
   contents: write
@@ -11,9 +11,40 @@ on:
     paths:
       - 'src/website/**'
       - 'src/worker/**'
+      - 'src/deploy/setup/**'
   workflow_dispatch:
 
 jobs:
+  build-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: src/deploy/setup
+
+      - name: Build
+        run: npm run build
+        working-directory: src/deploy/setup
+        env:
+          CI: true
+
+      - name: Zip Build Artifacts
+        run: zip -r setup.zip build/setup
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: setup
+          path: setup.zip
+
   build-worker:
     runs-on: ubuntu-latest
     steps:
@@ -95,10 +126,13 @@ jobs:
           name: website
           path: build/website
 
-      - name: Create Release and Upload Worker Asset
+      - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v1
         with:
-          files: build/worker/**
+          files: |
+            build/worker/**
+            build/website/**
+            build/setup/**
           tag_name: ${{ github.run_id }}
           name: node-teslausb-${{ github.run_id }}
           body: "Release of build ${{ github.run_id }}"
@@ -107,14 +141,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Release and Upload Website Asset
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/website/**
-          tag_name: ${{ github.run_id }}
-          name: node-teslausb-${{ github.run_id }}
-          body: "Release of build ${{ github.run_id }}"
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

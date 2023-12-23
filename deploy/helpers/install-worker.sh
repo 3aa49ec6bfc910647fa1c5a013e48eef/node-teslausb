@@ -1,6 +1,6 @@
-# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install-worker.sh)"
+# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/helper/install-worker.sh)"
 
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/download-github-asset.sh)" -- worker.zip /bin/node-teslausb
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/helpers/download-github-asset.sh)" -- worker.zip /bin/node-teslausb
 
 echo "Installing required modules for worker..."
 cd /bin/node-teslausb/build/worker && npm i --omit=dev

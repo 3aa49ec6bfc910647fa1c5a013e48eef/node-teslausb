@@ -2,11 +2,7 @@
 
 # Install git and clone the repo to the local system
 # TODO: Migrate away from this in the future (done for worker and website)
-apt update && apt install git jq -y
-git clone https://github.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb.git /bin/node-teslausb
-
-# Install nodejs
-apt install nodejs npm rclone -y
+apt update && apt install jq nodejs npm rclone -y
 
 # Make root directory for virtual USB volumes
 mkdir /vusb
@@ -32,8 +28,11 @@ sudo mkfs.exfat -n TeslaCam /vusb/TeslaCam
 # Create mount point
 mkdir /mnt/TeslaCam
 
+# Install setup scripts
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/helpers/install-setup.sh)"
+
 # Configure
-cd /bin/node-teslausb/src/worker/src/configure && npm i && node .
+cd /bin/node-teslausb/build/setup && npm i && node .
 
 # Create log directory
 mkdir /logs
@@ -45,7 +44,7 @@ mkdir /logs
 sudo mount -o rw /vusb/TeslaCam /mnt/TeslaCam && mkdir /mnt/TeslaCam/TeslaCam && sudo umount /mnt/TeslaCam
 
 # Install worker
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install-worker.sh)"
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/helpers/install-worker.sh)"
 
 # Install website
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa1c5a013e48eef/node-teslausb/main/deploy/install-website.sh)"
