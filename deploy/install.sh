@@ -34,6 +34,25 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 # Create log directory
 mkdir /logs
 
+# Create config directory
+mkdir /config
+
+# Set default config
+cat << EOF > /config/node-teslausb.json
+{
+  "archive": {
+    "rcloneConfig": "node-teslausb",
+    "destinationPath": "teslausb/TeslaCam"
+  },
+  "paths": {
+    "sentryClips": "/mnt/TeslaCam/TeslaCam/SentryClips",
+    "savedClips": "/mnt/TeslaCam/TeslaCam/SavedClips"
+  },
+  "delayBetweenCopyRetryInSeconds": 3600,
+  "mainLoopIntervalInSeconds": 120
+}
+EOF
+
 # Clean unused packages
 # sudo apt-get autoremove --purge
 

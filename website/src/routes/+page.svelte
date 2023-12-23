@@ -5,6 +5,7 @@
 	let b = 0;
 	let total = 0;
 	let logFiles: string[] = [];
+	let configFiles: string[] = [];
 	let finishedApiCalls = false;
 	let lockChimes: any[] = [];
 	let selectedUrl = '';
@@ -33,6 +34,20 @@
 		console.log(logFiles.logFiles);
 
 		return logFiles.logFiles;
+	}
+
+	async function listConfigFiles() {
+		const response = await fetch('/api/configFiles', {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const configFiles = await response.json();
+		console.log(configFiles.configFiles);
+
+		return configFiles.configFiles;
 	}
 
 	async function getLockChimes() {
@@ -64,6 +79,7 @@
 
 	onMount(async () => {
 		logFiles = await listLogFiles();
+		configFiles = await listConfigFiles();
 		lockChimes = await getLockChimes();
 		console.log(logFiles);
 		finishedApiCalls = true;
@@ -79,6 +95,21 @@
 			<ul class="list-disc">
 				{#each logFiles as logFile}
 					<li><a href={`/viewLog/${logFile}`}>{logFile}</a></li>
+				{/each}
+			</ul>
+		{/if}
+	{:else}
+		<p>Loading...</p>
+	{/if}
+
+	<h2>Config Files</h2>
+	{#if finishedApiCalls == true}
+		{#if configFiles.length == 0}
+			<p>No log files found.</p>
+		{:else}
+			<ul class="list-disc">
+				{#each configFiles as configFile}
+					<li><a href={`/editConfig/${configFile}`}>{configFile}</a></li>
 				{/each}
 			</ul>
 		{/if}

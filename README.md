@@ -37,7 +37,8 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 - [x] Fix project structure
 - [x] Clean up the install process
 - [x] Clean up the configuration process
-- [x] Package the project properly
+- [x] Package the project
+- [ ] Package the project properly
 - [ ] Add lifecycle management for destination (retention policy etc)
 - [ ] Add web server for configuration (managing rclone, network settings), status (system, network, copy, usb host) and statistics (uptime, copy, storage)
 - [ ] Add functionality to handle scenarios such as keeping car awake for transfers

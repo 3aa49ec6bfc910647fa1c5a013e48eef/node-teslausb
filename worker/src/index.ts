@@ -5,20 +5,10 @@ import { logWithTimestamp, errorWithTimestamp } from './modules/log.js';
 import { restartWifi, checkIfArchiveIsReachable } from './modules/network.js';
 import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './modules/storage.js';
 import { checkLockChime } from './modules/lockChimes.js';
+import { readConfigFile } from './modules/config.js';
 
-const config = {
-    archive: {
-        server: (getRcloneConfig()).host,
-        rcloneConfig: "node-teslausb",
-        destinationPath: "teslausb/TeslaCam"
-    },
-    paths: {
-        sentryClips: "/mnt/TeslaCam/TeslaCam/SentryClips",
-        savedClips: "/mnt/TeslaCam/TeslaCam/SavedClips",
-    },
-    delayBetweenCopyRetryInSeconds: 3600,
-    mainLoopIntervalInSeconds: 120,
-}
+const configFilePath = '/config/node-teslausb.json';
+const config = await readConfigFile(configFilePath);
 
 interface WorkerState {
     errorCount: number;
@@ -39,7 +29,7 @@ const processInterval = async () => {
 
     await checkLockChime();
 
-    if (config.archive.server === false) {
+    if (getRcloneConfig() === false) {
         errorWithTimestamp(`rclone config file not found at '/root/.config/rclone/rclone.conf', run 'rclone config' to set up.`);
         return;
     }
