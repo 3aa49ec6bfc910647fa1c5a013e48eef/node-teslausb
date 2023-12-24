@@ -9,7 +9,7 @@
 	let finishedApiCalls = false;
 	let lockChimes: any[] = [];
 	let selectedUrl = '';
-
+	let dashboardData: any = {};
 
 	async function getLockChimes() {
 		const response = await fetch('/api/lockChimes', {
@@ -24,6 +24,20 @@
 
 		return lockChimes;
 	}
+
+	const getDashboardData = async () => {
+		const response = await fetch('/api/dashboard', {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const dashboardData = await response.json();
+		console.log("dashboardData:",dashboardData);
+
+		return dashboardData;
+	};
 
 	const installLockChime = async () => {
 		const response = await fetch('/api/lockChimes', {
@@ -42,6 +56,7 @@
 		logFiles = data.logFiles;
 		configFiles = data.configFiles;
 		lockChimes = await getLockChimes();
+		dashboardData = await getDashboardData();
 		finishedApiCalls = true;
 	});
 </script>
@@ -100,6 +115,11 @@
 			</p>
 		</div>
 	{/if}
+</div>
+
+<div>
+	<h2>Stats</h2>
+	Uptime: {dashboardData.uptime}
 </div>
 <!-- <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
