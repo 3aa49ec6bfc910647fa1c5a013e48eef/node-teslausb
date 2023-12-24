@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { Readable } from 'svelte/store';
 	import { createEditor, Editor, EditorContent } from 'svelte-tiptap';
-    import StarterKit from '@tiptap/starter-kit';
+	import StarterKit from '@tiptap/starter-kit';
 	import { page } from '$app/stores';
 
 	let isLoading = true;
@@ -28,7 +28,7 @@
 
 	const save = () => {
 		console.log($editor);
-        console.log($editor?.getHTML());
+		console.log($editor?.getHTML());
 	};
 
 	const revert = () => {
@@ -43,7 +43,7 @@
 
 	onMount(async () => {
 		console.log('onMount');
-        let configContent = await getConfig(configName)
+		let configContent = await getConfig(configName);
 		editor = createEditor({
 			extensions: [StarterKit],
 			content: configContent
@@ -51,13 +51,10 @@
 	});
 </script>
 
-<div class="p-2 whitespace-pre-wrap">
-	<!-- {#if html !== 'Loading content...'} -->
-		<EditorContent editor={$editor} />
-	<!-- {:else} -->
-		<!-- <p>Loading config...</p> -->
-	<!-- {/if} -->
-
+<div class="p-2">
+    <div class="border border-gray-200 p-2 text-sm">
+        <EditorContent editor={$editor} />
+    </div>
 	<button class="mt-2 mr-2" on:click={save}>Save</button>
 	<button class="mt-2 bg-gray-500" on:click={revert}>Revert</button>
 </div>
