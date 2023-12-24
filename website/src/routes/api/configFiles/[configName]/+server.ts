@@ -1,5 +1,5 @@
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
-import { readFileSync, existsSync, unlinkSync } from 'fs';
+import { readFileSync, existsSync, unlinkSync, writeFileSync } from 'fs';
 import fs from 'fs';
 import { configNameToPathMapping } from '$lib/constants';
 
@@ -17,11 +17,27 @@ const getConfigContent = (configName: string): string => {
     }
 };
 
+const setConfigContent = (configName: string, content: string): boolean => {
+    const configPath = configNameToPathMapping[configName];
+    if (!configPath) {
+        console.error(`No path found for config: ${configName}`);
+        return false;
+    }
+
+    try {
+        writeFileSync(configPath, content, 'utf8');
+        return true;
+    } catch (err) {
+        console.error(`Error writing file: ${err}`);
+        return false;
+    }
+};
+
 export const GET: RequestHandler = async (event: RequestEvent) => {
     const configName = event.params.configName;
-	const configContent = configName !== undefined ? (getConfigContent(configName)).replaceAll("\n","<br>").replaceAll(" ","&nbsp;") : "";
+	const configContent = configName !== undefined ? (getConfigContent(configName)) : "";
 
-    console.log("configName:",configName, configContent)
+    // console.log("configName:",configName, configContent)
 
     return new Response(JSON.stringify({ message: `Config name is: ${configName}`, content: configContent }), {
         status: 200,
@@ -31,11 +47,33 @@ export const GET: RequestHandler = async (event: RequestEvent) => {
     });
 };
 
-export const PUT: RequestHandler = async (event: RequestEvent) => {
-    // const logName = event.params.logName ?? "";
-    // const logPath = logNameToPathMapping[logName];
+async function readableStreamToBuffer(readable: ReadableStream<Uint8Array>): Promise<Buffer> {
+    const reader = readable.getReader();
+    const chunks: Uint8Array[] = [];
 
-    // clearLogFile(logPath);
+    //eslint-disable-next-line no-constant-condition
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+    }
+
+    return Buffer.concat(chunks);
+}
+
+export const PUT: RequestHandler = async (event: RequestEvent) => {
+
+    const configName = event.params.configName ?? "";
+
+    const buffer = await readableStreamToBuffer(event.request.body!);
+
+    // Convert Buffer to string (assuming the content is text-based like JSON)
+    const rawBody = buffer.toString();
+
+    // Parse the string as JSON (if the content type is JSON)
+    console.log("configContent:",rawBody)
+
+    setConfigContent(configName, rawBody);
 
     return new Response(JSON.stringify({ message: `OK` }), {
         status: 200,

@@ -6,6 +6,7 @@
 	import { page } from '$app/stores';
 
 	let isLoading = true;
+    let configContent = ""
 
 	$: configName = $page.params.configName;
 
@@ -19,20 +20,37 @@
 		});
 
 		const configContent = await response.json();
-		// console.log(configContent);
 		isLoading = false;
 		return configContent.content;
 	}
 
+    async function setConfig(configName: string, configContent: string) {
+		isLoading = true;
+		const response = await fetch(`/api/configFiles/${configName}`, {
+			method: 'PUT',
+			headers: {
+				'content-type': 'application/text'
+			},
+            body: configContent
+		});
+
+		const responseJson = await response.json();
+		isLoading = false;
+		return responseJson;
+	}
+
 	// let json: string = ""
 
-	const save = () => {
-		console.log($editor);
-		console.log($editor?.getHTML());
+	const save = async () => {
+        console.log($editor?.getHTML())
+        const updatedContent = $editor?.getHTML().replaceAll('<br>', '\n').replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;', '\t').replaceAll('&nbsp;', ' ').replaceAll('</p><p>', '\n').replaceAll('<p>', '').replaceAll('</p>', '');
+        await setConfig(configName, updatedContent);
+        configContent = $editor?.getHTML()
 	};
 
 	const revert = () => {
 		console.log('revert');
+        $editor?.commands.setContent(configContent);
 	};
 
 	const load = async () => {
@@ -43,7 +61,7 @@
 
 	onMount(async () => {
 		console.log('onMount');
-		let configContent = await getConfig(configName);
+		configContent = (await getConfig(configName)).replaceAll('\n', '<br>').replaceAll('\t', '&nbsp;&nbsp;&nbsp;&nbsp;').replaceAll(' ', '&nbsp');
 		editor = createEditor({
 			extensions: [StarterKit],
 			content: configContent
