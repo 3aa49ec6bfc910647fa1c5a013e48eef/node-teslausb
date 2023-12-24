@@ -28,6 +28,7 @@
 
 	const save = () => {
 		console.log($editor);
+        console.log($editor?.getHTML());
 	};
 
 	const revert = () => {
