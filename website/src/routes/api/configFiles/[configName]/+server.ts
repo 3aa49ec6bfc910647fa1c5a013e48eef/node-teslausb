@@ -19,7 +19,7 @@ const getConfigContent = (configName: string): string => {
 
 export const GET: RequestHandler = async (event: RequestEvent) => {
     const configName = event.params.configName;
-	const configContent = configName !== undefined ? (getConfigContent(configName)).replace("\n","<br>") : "";
+	const configContent = configName !== undefined ? (getConfigContent(configName)).replaceAll("\n","<br>") : "";
 
     console.log("configName:",configName, configContent)
 
