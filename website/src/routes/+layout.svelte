@@ -10,7 +10,7 @@
 
 <div class="inline-flex p-1" >
     <img src={iconPathLg} alt="icon" class="rounded"/>
-    <h1 class="pl-2">node-teslausb</h1>
+    <h1 class="pl-2"><a href="/" class="text-black no-underline">node-teslausb</a></h1>
 </div>
 
 
