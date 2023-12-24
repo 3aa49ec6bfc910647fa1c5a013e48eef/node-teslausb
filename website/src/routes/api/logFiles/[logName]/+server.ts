@@ -17,19 +17,6 @@ const getLogContent = (logName: string): string => {
     }
 };
 
-// const deleteLogFile = (logName: string | undefined): void => {
-//     const logPath = logNameToPathMapping[logName ?? ""];
-//     if (!logPath || !existsSync(logPath)) {
-//         return;
-//     }
-
-//     try {
-//         unlinkSync(logPath);
-//     } catch (err) {
-//         console.error(`Error deleting file: ${err}`);
-//     }
-// }
-
 const clearLogFile = (logPath: string | undefined) => {
 
     console.log("clearLogFile:",logPath)

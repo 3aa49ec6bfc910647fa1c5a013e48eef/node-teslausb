@@ -63,6 +63,8 @@
 	});
 </script>
 
+<h1>Config file: {configName}</h1>
+
 <div class="p-2">
     <div class="border border-gray-200 p-2 text-sm">
         <EditorContent editor={$editor} />

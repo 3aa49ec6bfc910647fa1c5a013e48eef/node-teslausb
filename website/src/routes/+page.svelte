@@ -1,54 +1,15 @@
 <script lang="ts">
+	import type { Data } from './+page.js';
 	import { onMount } from 'svelte';
 
-	let a = 0;
-	let b = 0;
-	let total = 0;
+	export let data: Data;
+
 	let logFiles: string[] = [];
 	let configFiles: string[] = [];
 	let finishedApiCalls = false;
 	let lockChimes: any[] = [];
 	let selectedUrl = '';
 
-	async function add() {
-		const response = await fetch('/api/dashboard', {
-			method: 'GET',
-			body: JSON.stringify({ a, b }),
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-
-		total = await response.json();
-	}
-
-	async function listLogFiles() {
-		const response = await fetch('/api/logFiles', {
-			method: 'GET',
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-
-		const logFiles = await response.json();
-		console.log(logFiles.logFiles);
-
-		return logFiles.logFiles;
-	}
-
-	async function listConfigFiles() {
-		const response = await fetch('/api/configFiles', {
-			method: 'GET',
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-
-		const configFiles = await response.json();
-		console.log(configFiles.configFiles);
-
-		return configFiles.configFiles;
-	}
 
 	async function getLockChimes() {
 		const response = await fetch('/api/lockChimes', {
@@ -78,10 +39,9 @@
 	};
 
 	onMount(async () => {
-		logFiles = await listLogFiles();
-		configFiles = await listConfigFiles();
+		logFiles = data.logFiles;
+		configFiles = data.configFiles;
 		lockChimes = await getLockChimes();
-		console.log(logFiles);
 		finishedApiCalls = true;
 	});
 </script>
