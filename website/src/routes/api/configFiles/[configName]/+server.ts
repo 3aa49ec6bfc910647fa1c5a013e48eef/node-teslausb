@@ -64,14 +64,10 @@ async function readableStreamToBuffer(readable: ReadableStream<Uint8Array>): Pro
 export const PUT: RequestHandler = async (event: RequestEvent) => {
 
     const configName = event.params.configName ?? "";
-
     const buffer = await readableStreamToBuffer(event.request.body!);
 
     // Convert Buffer to string (assuming the content is text-based like JSON)
     const rawBody = buffer.toString();
-
-    // Parse the string as JSON (if the content type is JSON)
-    console.log("configContent:",rawBody)
 
     setConfigContent(configName, rawBody);
 

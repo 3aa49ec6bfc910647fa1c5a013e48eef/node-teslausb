@@ -42,25 +42,19 @@
 	// let json: string = ""
 
 	const save = async () => {
-        console.log($editor?.getHTML())
+        // console.log($editor?.getHTML())
         const updatedContent = $editor?.getHTML().replaceAll('<br>', '\n').replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;', '\t').replaceAll('&nbsp;', ' ').replaceAll('</p><p>', '\n').replaceAll('<p>', '').replaceAll('</p>', '');
         await setConfig(configName, updatedContent);
         configContent = $editor?.getHTML()
 	};
 
 	const revert = () => {
-		console.log('revert');
         $editor?.commands.setContent(configContent);
-	};
-
-	const load = async () => {
-		console.log('load');
 	};
 
 	let editor: Readable<Editor>;
 
 	onMount(async () => {
-		console.log('onMount');
 		configContent = (await getConfig(configName)).replaceAll('\n', '<br>').replaceAll('\t', '&nbsp;&nbsp;&nbsp;&nbsp;').replaceAll(' ', '&nbsp');
 		editor = createEditor({
 			extensions: [StarterKit],
