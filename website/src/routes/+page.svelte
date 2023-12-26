@@ -52,6 +52,45 @@
 		console.log(installResponse);
 	};
 
+	const updateAll = async () => {
+		const response = await fetch('/api/update', {
+			method: 'POST',
+			body: JSON.stringify({ updateType: 'all' }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const updateResponse = await response.json();
+		console.log(updateResponse);
+	};
+
+	const updateWorker = async () => {
+		const response = await fetch('/api/update', {
+			method: 'POST',
+			body: JSON.stringify({ updateType: 'worker' }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const updateResponse = await response.json();
+		console.log(updateResponse);
+	};
+
+	const updateWebsite = async () => {
+		const response = await fetch('/api/update', {
+			method: 'POST',
+			body: JSON.stringify({ updateType: 'website' }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const updateResponse = await response.json();
+		console.log(updateResponse);
+	};
+
 	onMount(async () => {
 		logFiles = data.logFiles;
 		configFiles = data.configFiles;
@@ -117,10 +156,18 @@
 	{/if}
 </div>
 
-<div>
+<div class="p-2">
 	<h2>Stats</h2>
 	Uptime: {dashboardData.uptime}
 </div>
+
+<div class="p-2">
+	<h2>Software Updates</h2>
+	<button class="mt-2 mr-2" on:click={updateAll}>Update All</button>
+	<button class="mt-2 mr-2" on:click={updateWorker}>Update Worker</button>
+	<button class="mt-2 mr-2" on:click={updateWebsite}>Update Website</button>
+</div>
+
 <!-- <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
 <input type="number" bind:value={a}> +
