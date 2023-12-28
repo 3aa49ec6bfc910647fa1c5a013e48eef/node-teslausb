@@ -2,7 +2,7 @@
 
 **This project was inspired by [teslausb](https://github.com/marcone/teslausb)**.
 
-**node-teslausb in its current form it has far less functionality than teslausb**.  However it is intended to be an easily extensible solution, orchestrated by [Node.js](https://nodejs.org/en) and more features will be added over time.  It should be noted that there is only limited hardware support with [Raspberry Pi Zero 2 W](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/) being the only supported device.
+**node-teslausb in its current form it has far less functionality than teslausb**.  However it is intended to be an easily extensible solution, orchestrated by [Node.js](https://nodejs.org/en) and more features will be added over time.  There is limited hardware support with [Raspberry Pi Zero 2 W](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/) being the only supported device.
 
 ## Installation
 
