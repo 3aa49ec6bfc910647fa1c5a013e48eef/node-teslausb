@@ -6,6 +6,7 @@ import { restartWifi, checkIfArchiveIsReachable } from './modules/network.js';
 import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './modules/storage.js';
 import { checkLockChime } from './modules/lockChimes.js';
 import { readConfigFile } from './modules/config.js';
+import { checkAndInstallUpdate, installUpdate } from './modules/update.js';
 
 const configFilePath = '/config/node-teslausb.json';
 const config = await readConfigFile(configFilePath);
@@ -13,17 +14,19 @@ const config = await readConfigFile(configFilePath);
 interface WorkerState {
     errorCount: number;
     lastCopyDate: Date | undefined;
+    lastUpdateCheckedDate: Date | undefined;
 }
 
 const state: WorkerState = {
     errorCount: 0,
     lastCopyDate: undefined,
+    lastUpdateCheckedDate: undefined,
 }
 
 logWithTimestamp("Starting");
 
-const processInterval = async () => {
-    logWithTimestamp("Processing");
+const processRcloneCopy = async () => {
+    logWithTimestamp("Processing rclone copy");
 
     // TODO: add a health check that checks - if on wifi, but no wifi clients, and cannot connect to source, or copy job has been running for 2+ hrs (once refactored to run 1 rclone job per folder), then reboot
 
@@ -75,7 +78,14 @@ const main = async () => {
     isRunning = true;
 
     try {
-        await processInterval();
+        let promises = []
+        const rcloneCopyPromise = processRcloneCopy();
+        promises.push(rcloneCopyPromise);
+        if (config.autoUpdate.enabled && (state.lastUpdateCheckedDate === undefined || ((new Date()).getTime() > (new Date(state.lastUpdateCheckedDate)).getTime() + config.autoUpdate.checkInterval * 1000))) {
+            const updateCheckPromise = checkAndInstallUpdate();
+            promises.push(updateCheckPromise);
+        }
+        await Promise.all(promises);
         if (state.errorCount > 0) {
             state.errorCount -= 1;
             logWithTimestamp("Error count reduced:", state.errorCount);
