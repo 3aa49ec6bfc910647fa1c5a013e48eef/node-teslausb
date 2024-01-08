@@ -25,6 +25,7 @@ const state: WorkerState = {
 
 logWithTimestamp("Starting");
 
+// TODO: remove dependencies and move to rclone.ts
 const processRcloneCopy = async () => {
     logWithTimestamp("Processing rclone copy");
 
@@ -37,9 +38,10 @@ const processRcloneCopy = async () => {
         return;
     }
 
-    const archiveReachable = await checkIfArchiveIsReachable();
+    const archiveReachable = await checkIfArchiveIsReachable(); // this is redundant, clean up later
     if (archiveReachable === false) {
-        await restartWifi();
+        // removing this functionality due to hotspot mode, do a cleanup later
+        // await restartWifi();
     } else if (state.lastCopyDate === undefined || ((new Date()).getTime() > (new Date(state.lastCopyDate)).getTime() + config.delayBetweenCopyRetryInSeconds * 1000)) {
         logWithTimestamp("Connected to archive server, starting copy");
         try {
@@ -78,14 +80,21 @@ const main = async () => {
     isRunning = true;
 
     try {
-        let promises = []
-        const rcloneCopyPromise = processRcloneCopy();
-        promises.push(rcloneCopyPromise);
-        if (config.autoUpdate.enabled && (state.lastUpdateCheckedDate === undefined || ((new Date()).getTime() > (new Date(state.lastUpdateCheckedDate)).getTime() + config.autoUpdate.checkInterval * 1000))) {
-            const updateCheckPromise = checkAndInstallUpdate();
-            promises.push(updateCheckPromise);
+        const archiveReachable = await checkIfArchiveIsReachable();
+        let promises: Promise<any>[] = []
+        if (archiveReachable === true) {
+            promises.push(processRcloneCopy())
+            // const rcloneCopyPromise = processRcloneCopy();
+            // promises.push(rcloneCopyPromise);
+            if (config.autoUpdate.enabled && (state.lastUpdateCheckedDate === undefined || ((new Date()).getTime() > (new Date(state.lastUpdateCheckedDate)).getTime() + config.autoUpdate.checkInterval * 1000))) {
+                // const updateCheckPromise = checkAndInstallUpdate();
+                promises.push(checkAndInstallUpdate());
+            }
+        } else {
+            // do wifi hotspot stuff here
         }
         await Promise.all(promises);
+
         if (state.errorCount > 0) {
             state.errorCount -= 1;
             logWithTimestamp("Error count reduced:", state.errorCount);

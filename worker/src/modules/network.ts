@@ -8,7 +8,7 @@ export const restartWifi = async () => {
     await executeBashCommand("ifconfig wlan0 down && ifconfig wlan0 up")
 }
 
-export const checkIfArchiveIsReachable = async () => {
+export const checkIfArchiveIsReachable = async (): Promise<boolean> => {
 
     const config = getRcloneConfig()
     const connectivityTestType = getConnectivityTestType(config)
@@ -20,6 +20,8 @@ export const checkIfArchiveIsReachable = async () => {
     if (connectivityTestType === ConnectivityTestType.pingHost) {
         return await testPingHost(config.host)
     }
+
+    return false
 
 };
 
