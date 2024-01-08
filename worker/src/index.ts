@@ -89,6 +89,7 @@ const main = async () => {
             if (config.autoUpdate.enabled && (state.lastUpdateCheckedDate === undefined || ((new Date()).getTime() > (new Date(state.lastUpdateCheckedDate)).getTime() + config.autoUpdate.checkInterval * 1000))) {
                 // const updateCheckPromise = checkAndInstallUpdate();
                 promises.push(checkAndInstallUpdate());
+                state.lastUpdateCheckedDate = new Date();
             }
         } else {
             // do wifi hotspot stuff here
