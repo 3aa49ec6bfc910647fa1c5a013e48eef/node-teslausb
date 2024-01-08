@@ -5,6 +5,40 @@ import { executeBashCommand } from './bash.js';
 import { clearInterval, setInterval } from 'timers';
 import readLastLines from 'read-last-lines';
 import path from 'path';
+import { checkIfArchiveIsReachable } from './network.js';
+import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './storage.js';
+
+// TODO: remove dependencies and move to rclone.ts
+export const processRcloneCopy = async (paths: string[], delayBetweenCopyRetryInSeconds: number, rcloneConfigPath: string, rcloneDestinationPath: string) => {
+    logWithTimestamp("Processing rclone copy");
+
+    // TODO: add a health check that checks - if on wifi, but no wifi clients, and cannot connect to source, or copy job has been running for 2+ hrs (once refactored to run 1 rclone job per folder), then reboot
+
+    if (getRcloneConfig() === false) {
+        errorWithTimestamp(`rclone config file not found at '/root/.config/rclone/rclone.conf', run 'rclone config' to set up.`);
+        return;
+    }
+
+    logWithTimestamp("Starting copy");
+    try {
+        await mountTeslaCamAsReadOnly();
+    } catch (error) {
+        errorWithTimestamp("Error mounting TeslaCam:", error);
+    }
+    try {
+        for (const path of paths) {
+            await rcloneCopyWithProgress(path, rcloneConfigPath, rcloneDestinationPath);
+        }
+    } catch (error) {
+        errorWithTimestamp("Error copying TeslaCam:", error);
+    }
+    try {
+        await unmountTeslaCam();
+    } catch (error) {
+        errorWithTimestamp("Error unmounting TeslaCam:", error);
+    }
+    logWithTimestamp(`Executed copy, will not attempt for another ${delayBetweenCopyRetryInSeconds} seconds`);
+}
 
 export const rcloneCopyWithProgress = async (path: string, rcloneConfig: string, destinationPath: string) => {
     const intervalId = setInterval(() => {
@@ -19,8 +53,8 @@ export const rcloneCopyWithProgress = async (path: string, rcloneConfig: string,
     }
 };
 
-// TODO: Move over to this new function (not tested yet)
 
+// TODO: Move over to this new function (not tested yet)
 export const rCloneCopyWithProgressByFolder = async (basePath: string, rcloneConfig: string, destinationPath: string) => {
     // Function to list subfolders
     const listSubfolders = async (dir: string): Promise<string[]> => {
@@ -59,7 +93,7 @@ export const rCloneCopyWithProgressByFolder = async (basePath: string, rcloneCon
             logWithTimestamp(`Still copying folder: ${folder}.  Check rclone.log for status...`);
             // Add something useful here, e.g. giving percentage complete, transfer speed, time remaining
         }, 60000); // 60000 ms = 1 minute
-    
+
         try {
             await rcloneCopy(folder, rcloneConfig, path.join(destinationPath, path.basename(folder)));
         } finally {

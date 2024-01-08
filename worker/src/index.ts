@@ -1,6 +1,6 @@
 // import { createDb, addItem, getItem, updateItem, queryItem } from './modules/db.js';
 
-import { getRcloneConfig, rcloneCopyWithProgress } from './modules/rclone.js';
+import { getRcloneConfig, rcloneCopyWithProgress, processRcloneCopy } from './modules/rclone.js';
 import { logWithTimestamp, errorWithTimestamp } from './modules/log.js';
 import { restartWifi, checkIfArchiveIsReachable } from './modules/network.js';
 import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './modules/storage.js';
@@ -25,51 +25,6 @@ const state: WorkerState = {
 
 logWithTimestamp("Starting");
 
-// TODO: remove dependencies and move to rclone.ts
-const processRcloneCopy = async () => {
-    logWithTimestamp("Processing rclone copy");
-
-    // TODO: add a health check that checks - if on wifi, but no wifi clients, and cannot connect to source, or copy job has been running for 2+ hrs (once refactored to run 1 rclone job per folder), then reboot
-
-    await checkLockChime();
-
-    if (getRcloneConfig() === false) {
-        errorWithTimestamp(`rclone config file not found at '/root/.config/rclone/rclone.conf', run 'rclone config' to set up.`);
-        return;
-    }
-
-    const archiveReachable = await checkIfArchiveIsReachable(); // this is redundant, clean up later
-    if (archiveReachable === false) {
-        // removing this functionality due to hotspot mode, do a cleanup later
-        // await restartWifi();
-    } else if (state.lastCopyDate === undefined || ((new Date()).getTime() > (new Date(state.lastCopyDate)).getTime() + config.delayBetweenCopyRetryInSeconds * 1000)) {
-        logWithTimestamp("Connected to archive server, starting copy");
-        try {
-            await mountTeslaCamAsReadOnly();
-        } catch (error) {
-            errorWithTimestamp("Error mounting TeslaCam:", error);
-        }
-        try {
-            const paths = [
-                config.paths.sentryClips,
-                config.paths.savedClips,
-            ];
-            for (const path of paths) {
-                await rcloneCopyWithProgress(path, config.archive.rcloneConfig, config.archive.destinationPath);
-            }
-        } catch (error) {
-            errorWithTimestamp("Error copying TeslaCam:", error);
-        }
-        try {
-            await unmountTeslaCam();
-        } catch (error) {
-            errorWithTimestamp("Error unmounting TeslaCam:", error);
-        }
-        logWithTimestamp(`Executed copy, will not attempt for another ${config.delayBetweenCopyRetryInSeconds} seconds`);
-        state.lastCopyDate = new Date();
-    }
-}
-
 let isRunning = false;
 
 const main = async () => {
@@ -82,19 +37,38 @@ const main = async () => {
     try {
         const archiveReachable = await checkIfArchiveIsReachable();
         let promises: Promise<any>[] = []
+
+        promises.push(checkLockChime())
+
         if (archiveReachable === true) {
-            promises.push(processRcloneCopy())
-            // const rcloneCopyPromise = processRcloneCopy();
-            // promises.push(rcloneCopyPromise);
+            logWithTimestamp("Connected to archive server.");
+            if (state.lastCopyDate === undefined || ((new Date()).getTime() > (new Date(state.lastCopyDate)).getTime() + config.delayBetweenCopyRetryInSeconds * 1000)) {
+                promises.push(
+                    // Make an interface for this
+                    processRcloneCopy(
+                        [
+                            config.paths.sentryClips,
+                            config.paths.savedClips,
+                        ],
+                        config.delayBetweenCopyRetryInSeconds,
+                        config.archive.rcloneConfig,
+                        config.archive.destinationPath
+                    )
+                )
+            }
             if (config.autoUpdate.enabled && (state.lastUpdateCheckedDate === undefined || ((new Date()).getTime() > (new Date(state.lastUpdateCheckedDate)).getTime() + config.autoUpdate.checkInterval * 1000))) {
-                // const updateCheckPromise = checkAndInstallUpdate();
                 promises.push(checkAndInstallUpdate());
-                state.lastUpdateCheckedDate = new Date();
             }
         } else {
             // do wifi hotspot stuff here
         }
+
         await Promise.all(promises);
+
+        if (archiveReachable == true) {
+            state.lastCopyDate = new Date();
+            state.lastUpdateCheckedDate = new Date();
+        }
 
         if (state.errorCount > 0) {
             state.errorCount -= 1;
