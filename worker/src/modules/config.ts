@@ -3,15 +3,33 @@ import path from 'path';
 
 export interface NodeTeslaUsbConfig {
     archive: {
-        rcloneConfig: String,
-        destinationPath: String
+        rcloneConfig: string,
+        destinationPath: string
     },
     paths: {
-        sentryClips: String,
-        savedClips: String,
+        sentryClips: string,
+        savedClips: string,
     },
-    delayBetweenCopyRetryInSeconds: Number,
-    mainLoopIntervalInSeconds: Number,
+    delayBetweenCopyRetryInSeconds: number,
+    mainLoopIntervalInSeconds: number,
+    autoUpdate: { // add to default config
+        enabled: boolean,
+        checkInterval: number
+    },
+    wireless: { // add to default config
+        hotspot: {
+            enabled: boolean,
+            ssid: string,
+            password: string,
+        },
+        networks: {
+            ssid: string,
+            password: string,
+            priority: number,
+            hidden: boolean //todo: add functionality to handle hidden networks
+        }[],
+        refreshInterval: number
+    }
 }
 
 export const readConfigFile = async (filePath: string): Promise<NodeTeslaUsbConfig> => {
