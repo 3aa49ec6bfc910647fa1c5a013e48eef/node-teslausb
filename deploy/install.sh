@@ -35,10 +35,10 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/3aa49ec6bfc910647fa
 mkdir /logs
 
 # Create config directory
-mkdir /config
+# mkdir /config
 
 # Set default config
-cat << EOF > /config/node-teslausb.json
+cat << EOF > /etc/node-teslausb.json
 {
   "archive": {
     "rcloneConfig": "node-teslausb",

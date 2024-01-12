@@ -8,7 +8,7 @@ import { checkLockChime } from './modules/lockChimes.js';
 import { readConfigFile } from './modules/config.js';
 import { checkAndInstallUpdate, installUpdate } from './modules/update.js';
 
-const configFilePath = '/config/node-teslausb.json';
+const configFilePath = '/etc/node-teslausb.json';
 const config = await readConfigFile(configFilePath);
 
 interface WorkerState {
