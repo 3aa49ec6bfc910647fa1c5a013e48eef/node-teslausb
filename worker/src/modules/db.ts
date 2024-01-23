@@ -1,14 +1,18 @@
 import sqlite3 from 'sqlite3';
 import { unlink } from 'fs';
 
-export interface DatabaseItem {
-    id?: number;
+export interface DatabaseInputItem {
     item: string;
     itemType: 'folder';
-    modifiedDate?: Date;
-    size?: number;
+    itemModifiedDate?: Date;
+    itemSize?: number;
     copyStarted: boolean;
     copyFinished: boolean;
+}
+
+export interface DatabaseItem extends DatabaseInputItem {
+    id: number;
+    recordCreated: Date;
 }
 
 export class DatabaseManager {
@@ -29,10 +33,11 @@ export class DatabaseManager {
             this.db.serialize(() => {
                 this.db.run(`CREATE TABLE IF NOT EXISTS items (
                     id INTEGER PRIMARY KEY,
+                    recordCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
                     item TEXT,
                     itemType TEXT,
-                    modifiedDate DATETIME,
-                    size INTEGER,
+                    itemModifiedDate DATETIME,
+                    itemSize INTEGER,
                     copyStarted BOOLEAN,
                     copyFinished BOOLEAN
                 )`, (tableErr) => {
@@ -70,11 +75,11 @@ export class DatabaseManager {
         });
     }
 
-    public addItem(itemData: DatabaseItem) {
-        const sql = `INSERT INTO items (item, itemType, modifiedDate, size, copyStarted, copyFinished) VALUES (?, ?, ?, ?, ?, ?)`;
-        const { item, itemType, modifiedDate, size, copyStarted, copyFinished } = itemData;
+    public addItem(itemData: DatabaseInputItem) {
+        const sql = `INSERT INTO items (item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished) VALUES (?, ?, ?, ?, ?, ?)`;
+        const { item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished } = itemData;
 
-        this.db.run(sql, [item, itemType, modifiedDate, size, copyStarted, copyFinished], function (err) {
+        this.db.run(sql, [item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished], function (err) {
             if (err) {
                 console.error(err.message);
             } else {
@@ -92,13 +97,14 @@ export class DatabaseManager {
                     reject(err);
                 } else {
                     if (row) {
-                        // Assuming row contains the fields matching the Item interface
+                        // Assuming row contains the fields matching the DatabaseItem interface
                         const item: DatabaseItem = {
                             id: row.id,
+                            recordCreated: new Date(row.recordCreated),
                             item: row.item,
                             itemType: row.itemType,
-                            modifiedDate: row.modifiedDate ? new Date(row.modifiedDate) : new Date(), // Use default value if modifiedDate is undefined
-                            size: row.size,
+                            itemModifiedDate: row.itemModifiedDate ? new Date(row.itemModifiedDate) : new Date(), // Use default value if itemModifiedDate is undefined
+                            itemSize: row.itemSize,
                             copyStarted: Boolean(row.copyStarted), // Convert to boolean
                             copyFinished: Boolean(row.copyFinished), // Convert to boolean
                         };
@@ -112,10 +118,10 @@ export class DatabaseManager {
     }
 
     public updateItem(id: number, itemData: DatabaseItem) {
-        const sql = `UPDATE items SET item = ?, itemType = ?, modifiedDate = ?, size = ?, copyStarted = ?, copyFinished = ? WHERE id = ?`;
-        const { item, itemType, modifiedDate, size, copyStarted, copyFinished } = itemData;
+        const sql = `UPDATE items SET item = ?, itemType = ?, itemModifiedDate = ?, itemSize = ?, copyStarted = ?, copyFinished = ? WHERE id = ?`;
+        const { item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished } = itemData;
         
-        this.db.run(sql, [item, itemType, modifiedDate, size, copyStarted, copyFinished, id], function (err) {
+        this.db.run(sql, [item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished, id], function (err) {
             if (err) {
                 console.error(err.message);
             } else {
@@ -146,10 +152,11 @@ export class DatabaseManager {
                     // Map each row to an Item object
                     const items: DatabaseItem[] = rows.map(row => ({
                         id: row.id,
+                        recordCreated: new Date(row.recordCreated),
                         item: row.item,
                         itemType: row.itemType,
-                        modifiedDate: row.modifiedDate ? new Date(row.modifiedDate) : new Date(), // Use default value if modifiedDate is undefined
-                        size: row.size,
+                        itemModifiedDate: row.itemModifiedDate ? new Date(row.itemModifiedDate) : new Date(), // Use default value if itemModifiedDate is undefined
+                        itemSize: row.itemSize,
                         copyStarted: Boolean(row.copyStarted),
                         copyFinished: Boolean(row.copyFinished)
                     }));
@@ -170,10 +177,11 @@ export class DatabaseManager {
                     if (row) {
                         const item: DatabaseItem = {
                             id: row.id,
+                            recordCreated: new Date(row.recordCreated),
                             item: row.item,
                             itemType: row.itemType,
-                            modifiedDate: row.modifiedDate ? new Date(row.modifiedDate) : new Date(), // Use default value if modifiedDate is undefined
-                            size: row.size,
+                            itemModifiedDate: row.itemModifiedDate ? new Date(row.itemModifiedDate) : new Date(), // Use default value if modifiedDate is undefined
+                            itemSize: row.itemSize,
                             copyStarted: Boolean(row.copyStarted), // Assuming stored as integers
                             copyFinished: Boolean(row.copyFinished)
                         };
