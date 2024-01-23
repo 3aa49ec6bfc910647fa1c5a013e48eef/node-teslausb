@@ -40,7 +40,7 @@ export const processRcloneCopy = async (paths: string[], delayBetweenCopyRetryIn
     logWithTimestamp(`Executed copy, will not attempt for another ${delayBetweenCopyRetryInSeconds} seconds`);
 }
 
-export const rcloneCopyWithProgress = async (path: string, rcloneConfig: string, destinationPath: string) => {
+export const rcloneCopyWithProgressOld = async (path: string, rcloneConfig: string, destinationPath: string) => {
     const intervalId = setInterval(() => {
         logWithTimestamp("Copying files, check rclone.log for status...");
         // Add something useful here, e.g. giving percentage complete, transfer speed, time remaining
@@ -55,7 +55,7 @@ export const rcloneCopyWithProgress = async (path: string, rcloneConfig: string,
 
 
 // TODO: Move over to this new function (not tested yet)
-export const rCloneCopyWithProgressByFolder = async (basePath: string, rcloneConfig: string, destinationPath: string) => {
+export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: string, destinationPath: string) => {
     // Function to list subfolders
     const listSubfolders = async (dir: string): Promise<string[]> => {
         const subdirs = await fs.promises.readdir(dir);
