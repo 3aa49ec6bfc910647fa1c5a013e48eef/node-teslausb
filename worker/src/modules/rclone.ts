@@ -7,9 +7,10 @@ import readLastLines from 'read-last-lines';
 import path from 'path';
 import { checkIfArchiveIsReachable } from './network.js';
 import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './storage.js';
+import { DatabaseManager, DatabaseItem } from './db.js';
 
 // TODO: remove dependencies and move to rclone.ts
-export const processRcloneCopy = async (paths: { source: string, destination: string }[], delayBetweenCopyRetryInSeconds: number, rcloneConfigPath: string) => {
+export const processRcloneCopy = async (paths: { source: string, destination: string }[], delayBetweenCopyRetryInSeconds: number, rcloneConfigPath: string, db: DatabaseManager) => {
     logWithTimestamp("Processing rclone copy");
 
     // TODO: add a health check that checks - if on wifi, but no wifi clients, and cannot connect to source, or copy job has been running for 2+ hrs (once refactored to run 1 rclone job per folder), then reboot
@@ -27,7 +28,7 @@ export const processRcloneCopy = async (paths: { source: string, destination: st
     }
     try {
         for (const path of paths) {
-            await rcloneCopyWithProgress(path.source, rcloneConfigPath, path.destination);
+            await rcloneCopyWithProgress(path.source, rcloneConfigPath, path.destination, db);
         }
     } catch (error) {
         errorWithTimestamp("Error copying TeslaCam:", error);
@@ -55,7 +56,7 @@ export const rcloneCopyWithProgressOld = async (path: string, rcloneConfig: stri
 
 
 // TODO: Move over to this new function (not tested yet)
-export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: string, destinationPath: string) => {
+export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: string, destinationPath: string, db: DatabaseManager) => {
     // Function to list subfolders
     const listSubfolders = async (dir: string): Promise<string[]> => {
         const subdirs = await fs.promises.readdir(dir);
@@ -86,6 +87,13 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         // Get folder information
         const { fileCount, totalSize } = await getFolderInfo(folder);
 
+        const folderItem = await db.getItemByProperty('item', folder);
+
+        if (folderItem !== undefined && folderItem !== null && folderItem.copyFinished === true && folderItem.size === totalSize) {
+            logWithTimestamp(`Skipping folder ${folder} because it has already been copied`);
+            continue;
+        }
+
         // Log event
         logWithTimestamp(`Copying folder: "${folder}" to "${destinationPath}", Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} MB`);
 
@@ -100,7 +108,30 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
             const lastElement = path.basename(folder);
             const resultPath = path.join(destinationPath, lastElement);
 
+            db.addItem({
+                item: folder,
+                itemType: 'folder',
+                modifiedDate: new Date(),
+                size: totalSize,
+                copyStarted: true,
+                copyFinished: false
+            })
+
             await rcloneCopy(folder, rcloneConfig, resultPath);
+
+            const folderItem = await db.getItemByProperty('item', folder);
+
+            if (folderItem === undefined || folderItem === null) {
+                throw new Error(`Could not find folder item with name ${folder}`);
+            }
+
+            const updatedFolderItem = {
+                ...folderItem,
+                copyFinished: true
+            }
+
+            db.updateItem(folderItem.id!, updatedFolderItem);
+
         } finally {
             clearInterval(intervalId);
         }

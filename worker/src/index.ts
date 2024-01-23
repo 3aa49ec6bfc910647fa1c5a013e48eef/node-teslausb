@@ -7,6 +7,7 @@ import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './modules/storage.js';
 import { checkLockChime } from './modules/lockChimes.js';
 import { readConfigFile } from './modules/config.js';
 import { checkAndInstallUpdate, installUpdate } from './modules/update.js';
+import { DatabaseManager } from './modules/db.js';
 
 const configFilePath = '/etc/node-teslausb.json';
 const config = await readConfigFile(configFilePath);
@@ -24,6 +25,9 @@ const state: WorkerState = {
 }
 
 logWithTimestamp("Starting");
+
+const db = new DatabaseManager(config.dbPath);
+await db.initializeDb();
 
 let isRunning = false;
 
@@ -49,6 +53,7 @@ const main = async () => {
                         config.paths,
                         config.delayBetweenCopyRetryInSeconds,
                         config.archive.rcloneConfig,
+                        db
                     )
                 )
             }

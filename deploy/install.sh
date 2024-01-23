@@ -37,6 +37,9 @@ mkdir /logs
 # Create config directory
 # mkdir /config
 
+# Create config and data directory
+mkdir /etc/node-teslausb
+
 # Set default config
 cat << EOF > /etc/node-teslausb.json
 {

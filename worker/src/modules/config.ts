@@ -9,6 +9,7 @@ export interface NodeTeslaUsbConfig {
         source: string,
         destination: string,
     }[],
+    dbPath: string;
     delayBetweenCopyRetryInSeconds: number,
     mainLoopIntervalInSeconds: number,
     autoUpdate: { // add to default config
