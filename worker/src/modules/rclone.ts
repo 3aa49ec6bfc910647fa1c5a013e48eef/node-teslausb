@@ -87,7 +87,7 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         const { fileCount, totalSize } = await getFolderInfo(folder);
 
         // Log event
-        console.log(`Copying folder: ${folder} to path ${path.join(destinationPath, path.basename(folder))}, Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} bytes`);
+        console.log(`Copying folder: "${folder}" to "${destinationPath}", Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} bytes`);
 
         const intervalId = setInterval(() => {
             logWithTimestamp(`Still copying folder: ${folder}.  Check rclone.log for status...`);
@@ -123,7 +123,7 @@ export const rcloneCopy = async (sourcePath: string, rcloneConfig: string, desti
         return
     }
     logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
-    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath}/SentryClips -v --transfers=1 --checkers=1 --use-json-log 2>&1 | tee -a /logs/rclone.log`, false)
+    await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath} -v --transfers=1 --checkers=1 --use-json-log 2>&1 | tee -a /logs/rclone.log`, false)
 
 }
 
