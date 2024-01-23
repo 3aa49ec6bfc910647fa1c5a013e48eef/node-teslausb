@@ -96,7 +96,11 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
 
         try {
             // await rcloneCopy(folder, rcloneConfig, path.join(destinationPath, path.basename(folder)));
-            await rcloneCopy(folder, rcloneConfig, destinationPath);
+
+            const lastElement = path.basename(folder);
+            const resultPath = path.join(destinationPath, lastElement);
+
+            await rcloneCopy(folder, rcloneConfig, resultPath);
         } finally {
             clearInterval(intervalId);
         }
