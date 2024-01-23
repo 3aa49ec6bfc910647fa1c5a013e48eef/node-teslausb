@@ -87,7 +87,7 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         const { fileCount, totalSize } = await getFolderInfo(folder);
 
         // Log event
-        console.log(`Copying folder: ${folder}, Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} bytes`);
+        console.log(`Copying folder: ${folder} to path ${path.join(destinationPath, path.basename(folder))}, Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} bytes`);
 
         const intervalId = setInterval(() => {
             logWithTimestamp(`Still copying folder: ${folder}.  Check rclone.log for status...`);
@@ -95,7 +95,8 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         }, 60000); // 60000 ms = 1 minute
 
         try {
-            await rcloneCopy(folder, rcloneConfig, path.join(destinationPath, path.basename(folder)));
+            // await rcloneCopy(folder, rcloneConfig, path.join(destinationPath, path.basename(folder)));
+            await rcloneCopy(folder, rcloneConfig, destinationPath);
         } finally {
             clearInterval(intervalId);
         }
