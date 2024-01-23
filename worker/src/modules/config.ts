@@ -4,12 +4,11 @@ import path from 'path';
 export interface NodeTeslaUsbConfig {
     archive: {
         rcloneConfig: string,
-        destinationPath: string
     },
     paths: {
-        sentryClips: string,
-        savedClips: string,
-    },
+        source: string,
+        destination: string,
+    }[],
     delayBetweenCopyRetryInSeconds: number,
     mainLoopIntervalInSeconds: number,
     autoUpdate: { // add to default config

@@ -9,7 +9,7 @@ import { checkIfArchiveIsReachable } from './network.js';
 import { mountTeslaCamAsReadOnly, unmountTeslaCam } from './storage.js';
 
 // TODO: remove dependencies and move to rclone.ts
-export const processRcloneCopy = async (paths: string[], delayBetweenCopyRetryInSeconds: number, rcloneConfigPath: string, rcloneDestinationPath: string) => {
+export const processRcloneCopy = async (paths: { source: string, destination: string }[], delayBetweenCopyRetryInSeconds: number, rcloneConfigPath: string) => {
     logWithTimestamp("Processing rclone copy");
 
     // TODO: add a health check that checks - if on wifi, but no wifi clients, and cannot connect to source, or copy job has been running for 2+ hrs (once refactored to run 1 rclone job per folder), then reboot
@@ -27,7 +27,7 @@ export const processRcloneCopy = async (paths: string[], delayBetweenCopyRetryIn
     }
     try {
         for (const path of paths) {
-            await rcloneCopyWithProgress(path, rcloneConfigPath, rcloneDestinationPath);
+            await rcloneCopyWithProgress(path.source, rcloneConfigPath, path.destination);
         }
     } catch (error) {
         errorWithTimestamp("Error copying TeslaCam:", error);

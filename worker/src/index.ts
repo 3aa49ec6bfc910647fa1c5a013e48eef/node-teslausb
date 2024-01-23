@@ -46,13 +46,9 @@ const main = async () => {
                 promises.push(
                     // Make an interface for this
                     processRcloneCopy(
-                        [
-                            config.paths.sentryClips,
-                            config.paths.savedClips,
-                        ],
+                        config.paths,
                         config.delayBetweenCopyRetryInSeconds,
                         config.archive.rcloneConfig,
-                        config.archive.destinationPath
                     )
                 )
             }
