@@ -87,7 +87,7 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         const { fileCount, totalSize } = await getFolderInfo(folder);
 
         // Log event
-        console.log(`Copying folder: "${folder}" to "${destinationPath}", Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} bytes`);
+        logWithTimestamp(`Copying folder: "${folder}" to "${destinationPath}", Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} MB`);
 
         const intervalId = setInterval(() => {
             logWithTimestamp(`Still copying folder: ${folder}.  Check rclone.log for status...`);
