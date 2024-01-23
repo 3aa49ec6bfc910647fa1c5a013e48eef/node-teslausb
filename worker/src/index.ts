@@ -56,7 +56,8 @@ const main = async () => {
                     )
                 )
             }
-            if (config.autoUpdate.enabled && (state.lastUpdateCheckedDate === undefined || ((new Date()).getTime() > (new Date(state.lastUpdateCheckedDate)).getTime() + config.autoUpdate.checkInterval * 1000))) {
+            if (config?.autoUpdate !== undefined && config.autoUpdate.enabled && (state.lastUpdateCheckedDate === undefined || ((new Date()).getTime() > (new Date(state.lastUpdateCheckedDate)).getTime() + config.autoUpdate.checkInterval * 1000))) {
+                // update default config to include autoUpdate
                 promises.push(checkAndInstallUpdate());
             }
         } else {
