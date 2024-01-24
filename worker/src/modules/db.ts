@@ -62,9 +62,11 @@ export class DatabaseManager {
         const sql = `INSERT INTO items (item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished) VALUES (?, ?, ?, ?, ?, ?)`;
         const { item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished } = itemData;
 
+        const itemModifiedDateISO = itemModifiedDate ? itemModifiedDate.toISOString() : null;
+
         try {
             const stmt = this.db.prepare(sql);
-            const info = stmt.run(item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished);
+            const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted, copyFinished);
             console.log(`A row has been inserted with rowid ${info.lastInsertRowid}`);
         } catch (err) {
             console.error(err);
@@ -101,9 +103,11 @@ export class DatabaseManager {
         const sql = `UPDATE items SET item = ?, itemType = ?, itemModifiedDate = ?, itemSize = ?, copyStarted = ?, copyFinished = ? WHERE id = ?`;
         const { item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished } = itemData;
 
+        const itemModifiedDateISO = itemModifiedDate ? itemModifiedDate.toISOString() : null;
+        
         try {
             const stmt = this.db.prepare(sql);
-            const info = stmt.run(item, itemType, itemModifiedDate, itemSize, copyStarted, copyFinished, id);
+            const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted, copyFinished, id);
             console.log(`Row(s) updated: ${info.changes}`);
         } catch (err) {
             console.error(err);
