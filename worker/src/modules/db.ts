@@ -35,10 +35,10 @@ export class DatabaseManager {
                 copyStarted BOOLEAN,
                 copyFinished BOOLEAN
             )`);
-            console.log('Table created or already exists.');
+            // console.log('Table created or already exists.');
 
             this.db.exec(`CREATE INDEX IF NOT EXISTS idx_items_item ON items(item)`);
-            console.log('Index on column `item` created or already exists.');
+            // console.log('Index on column `item` created or already exists.');
         } catch (err) {
             console.error(err);
         }
@@ -51,7 +51,7 @@ export class DatabaseManager {
 
             unlink(dbPath, (err) => {
                 if (err) console.error('Error deleting database file:', err);
-                else console.log('Database file deleted.');
+                // else console.log('Database file deleted.');
             });
         } catch (err) {
             console.error(err);
@@ -67,7 +67,7 @@ export class DatabaseManager {
         try {
             const stmt = this.db.prepare(sql);
             const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted ? 1 : 0, copyFinished ? 1 : 0);
-            console.log(`A row has been inserted with rowid ${info.lastInsertRowid}`);
+            // console.log(`A row has been inserted with rowid ${info.lastInsertRowid}`);
         } catch (err) {
             console.error(err);
         }
@@ -108,7 +108,7 @@ export class DatabaseManager {
         try {
             const stmt = this.db.prepare(sql);
             const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted ? 1 : 0, copyFinished ? 1 : 0, id);
-            console.log(`Row(s) updated: ${info.changes}`);
+            // console.log(`Row(s) updated: ${info.changes}`);
         } catch (err) {
             console.error(err);
         }
@@ -119,7 +119,7 @@ export class DatabaseManager {
         try {
             const stmt = this.db.prepare(sql);
             const info = stmt.run(id);
-            console.log(`Row(s) deleted: ${info.changes}`);
+            // console.log(`Row(s) deleted: ${info.changes}`);
         } catch (err) {
             console.error(err);
         }

@@ -90,7 +90,7 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         const folderItem = db.getItemByProperty('item', folder);
 
         if (folderItem !== undefined && folderItem !== null && folderItem.copyFinished === true && folderItem.itemSize === totalSize) {
-            logWithTimestamp(`Skipping folder ${folder} because it has already been copied`);
+            // logWithTimestamp(`Skipping folder ${folder} because it has already been copied`);
             continue;
         }
 
