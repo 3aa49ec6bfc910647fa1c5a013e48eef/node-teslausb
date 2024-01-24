@@ -66,7 +66,7 @@ export class DatabaseManager {
 
         try {
             const stmt = this.db.prepare(sql);
-            const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted, copyFinished);
+            const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted ? 1 : 0, copyFinished ? 1 : 0);
             console.log(`A row has been inserted with rowid ${info.lastInsertRowid}`);
         } catch (err) {
             console.error(err);
@@ -107,7 +107,7 @@ export class DatabaseManager {
         
         try {
             const stmt = this.db.prepare(sql);
-            const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted, copyFinished, id);
+            const info = stmt.run(item, itemType, itemModifiedDateISO, itemSize, copyStarted ? 1 : 0, copyFinished ? 1 : 0, id);
             console.log(`Row(s) updated: ${info.changes}`);
         } catch (err) {
             console.error(err);
