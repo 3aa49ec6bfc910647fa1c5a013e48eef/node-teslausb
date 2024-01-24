@@ -15,13 +15,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite3": "^9.3.0",
     "ini": "^4.1.1",
     "path": "^0.12.7",
     "ping": "^0.4.4",
-    "read-last-lines": "^1.8.0",
-    "sqlite3": "^5.1.6"
+    "read-last-lines": "^1.8.0"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8",
     "@types/ini": "^4.1.0",
     "@types/node": "^20.10.5",
     "@types/ping": "^0.4.4",

@@ -87,7 +87,7 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         // Get folder information
         const { fileCount, totalSize } = await getFolderInfo(folder);
 
-        const folderItem = await db.getItemByProperty('item', folder);
+        const folderItem = db.getItemByProperty('item', folder);
 
         if (folderItem !== undefined && folderItem !== null && folderItem.copyFinished === true && folderItem.itemSize === totalSize) {
             logWithTimestamp(`Skipping folder ${folder} because it has already been copied`);
@@ -119,7 +119,7 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
 
             await rcloneCopy(folder, rcloneConfig, resultPath);
 
-            const folderItem = await db.getItemByProperty('item', folder);
+            const folderItem = db.getItemByProperty('item', folder);
 
             if (folderItem === undefined || folderItem === null) {
                 throw new Error(`Could not find folder item with name ${folder}`);
