@@ -9,7 +9,7 @@ import { readConfigFile } from './modules/config.js';
 import { checkAndInstallUpdate, installUpdate } from './modules/update.js';
 import { DatabaseManager } from './modules/db.js';
 
-const configFilePath = '/etc/node-teslausb.json';
+const configFilePath = '/etc/node-teslausb/node-teslausb.json';
 const config = await readConfigFile(configFilePath);
 
 interface WorkerState {

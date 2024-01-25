@@ -13,7 +13,7 @@ DefaultDependencies=no
 [Service]
 Type=simple
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/node /bin/node-teslausb/build/worker/index.js
+ExecStart=/usr/bin/node --max-old-space-size=200 /bin/node-teslausb/build/worker/index.js
 WorkingDirectory=/bin/node-teslausb
 StandardOutput=append:/logs/worker.log
 StandardError=inherit

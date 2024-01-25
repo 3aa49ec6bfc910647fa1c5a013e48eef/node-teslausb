@@ -41,16 +41,22 @@ mkdir /logs
 mkdir /etc/node-teslausb
 
 # Set default config
-cat << EOF > /etc/node-teslausb.json
+cat << EOF > /etc/node-teslausb/node-teslausb.json
 {
   "archive": {
-    "rcloneConfig": "node-teslausb",
-    "destinationPath": "teslausb/TeslaCam"
+    "rcloneConfig": "node-teslausb"
   },
-  "paths": {
-    "sentryClips": "/mnt/TeslaCam/TeslaCam/SentryClips",
-    "savedClips": "/mnt/TeslaCam/TeslaCam/SavedClips"
-  },
+  "paths": [
+    {
+      "source": "/mnt/TeslaCam/TeslaCam/SentryClips",
+      "destination": "teslausb/TeslaCam/SentryClips"
+    },
+    {
+      "source": "/mnt/TeslaCam/TeslaCam/SavedClips",
+      "destination": "teslausb/TeslaCam/SavedClips"
+    }
+  ],
+  "dbPath": "/etc/node-teslausb/node-teslausb.sqlite3",
   "delayBetweenCopyRetryInSeconds": 3600,
   "mainLoopIntervalInSeconds": 120
 }

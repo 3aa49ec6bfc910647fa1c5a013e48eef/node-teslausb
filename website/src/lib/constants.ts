@@ -9,5 +9,5 @@ export const logNameToPathMapping: { [key: string]: string } = {
 
 export const configNameToPathMapping: { [key: string]: string } = {
     'rclone': isDevMode ? '/Users/blake/logs/rclone.log' : '/root/.config/rclone/rclone.conf',
-    'node-teslausb': isDevMode ? '/Users/blake/etc/node-teslausb.json' : '/etc/node-teslausb.json',
+    'node-teslausb': isDevMode ? '/Users/blake/etc/node-teslausb.json' : '/etc/node-teslausb/node-teslausb.json',
 };

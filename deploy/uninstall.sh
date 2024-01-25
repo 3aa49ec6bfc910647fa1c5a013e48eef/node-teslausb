@@ -14,4 +14,4 @@ rm /etc/systemd/system/node-teslausb-www.service
 rm -rf /bin/node-teslausb
 
 # Remove the worker config
-rm -rf /etc/node-teslausb.json
+# rm -rf /node-teslausb/node-teslausb.json
