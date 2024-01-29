@@ -1,6 +1,6 @@
 import { DatabaseManager } from './modules/db.js';
 
-const db = new DatabaseManager("/Users/blake/db.sqlite3");
+const db = new DatabaseManager("~/db.sqlite3");
 db.initializeDb();
 
 // db.addItem("test21322132", "folder", new Date(), 123, false, false);
