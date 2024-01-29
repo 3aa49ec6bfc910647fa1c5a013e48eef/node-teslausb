@@ -16,18 +16,20 @@ interface WorkerState {
     errorCount: number;
     lastCopyDate: Date | undefined;
     lastUpdateCheckedDate: Date | undefined;
+    isConnected: boolean;
 }
 
 const state: WorkerState = {
     errorCount: 0,
     lastCopyDate: undefined,
     lastUpdateCheckedDate: undefined,
+    isConnected: false
 }
 
-logWithTimestamp("Starting");
+logWithTimestamp("Starting worker...");
 
 const db = new DatabaseManager(config.dbPath);
-await db.initializeDb();
+db.initializeDb();
 
 let isRunning = false;
 

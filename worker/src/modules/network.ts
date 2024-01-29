@@ -32,7 +32,7 @@ const testPingHost = async (host: string) => {
             extra: ["-c", "1"],  // Sends only 1 packet
         });
 
-        logWithTimestamp(`${host} is ${res.alive ? 'reachable' : 'not reachable'}`);
+        // logWithTimestamp(`${host} is ${res.alive ? 'reachable' : 'not reachable'}`);
         return res.alive;
     } catch (error) {
         errorWithTimestamp('Error pinging host:', error);
@@ -47,7 +47,7 @@ const testInternetConnected = async () => {
             extra: ["-c", "1"],  // Sends only 1 packet
         });
 
-        logWithTimestamp(`Internet is ${res.alive ? 'reachable' : 'not reachable'}`);
+        // logWithTimestamp(`Internet is ${res.alive ? 'reachable' : 'not reachable'}`);
         return res.alive;
     } catch (error) {
         errorWithTimestamp('Error pinging google.com:', error);

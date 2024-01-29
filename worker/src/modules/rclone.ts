@@ -98,7 +98,7 @@ export const rcloneCopyWithProgress = async (basePath: string, rcloneConfig: str
         logWithTimestamp(`Copying folder: "${folder}" to "${destinationPath}", Files: ${fileCount}, Total Size: ${Math.round(totalSize / 1024 / 1024)} MB`);
 
         const intervalId = setInterval(() => {
-            logWithTimestamp(`Still copying folder: ${folder}.  Check rclone.log for status...`);
+            // logWithTimestamp(`Still copying folder: ${folder}.  Check rclone.log for status...`);
             // Add something useful here, e.g. giving percentage complete, transfer speed, time remaining
         }, 60000); // 60000 ms = 1 minute
 
@@ -157,7 +157,7 @@ export const rcloneCopy = async (sourcePath: string, rcloneConfig: string, desti
         logWithTimestamp(`Skipping rclone copy for ${sourcePath} (does not exist)`)
         return
     }
-    logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
+    // logWithTimestamp(`Starting rclone copy for ${sourcePath}`)
     await executeBashCommand(`rclone copy ${sourcePath} ${rcloneConfig}:${destinationPath} -v --transfers=1 --checkers=1 --use-json-log 2>&1 | tee -a /logs/rclone.log`, false)
 
 }

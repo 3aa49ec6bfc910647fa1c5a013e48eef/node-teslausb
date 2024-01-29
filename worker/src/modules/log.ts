@@ -1,5 +1,5 @@
 const getTimestamp = () => {
-    return new Date().toISOString();
+    return new Date().toString();
 };
 
 export const logWithTimestamp = (...args) => {
