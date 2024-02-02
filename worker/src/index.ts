@@ -47,7 +47,10 @@ const main = async () => {
         promises.push(checkLockChime())
 
         if (archiveReachable === true) {
-            logWithTimestamp("Connected to archive server.");
+            if (state.isConnected === false) {
+                logWithTimestamp("Connected to archive server.");
+            }
+            state.isConnected = true;
             if (state.lastCopyDate === undefined || ((new Date()).getTime() > (new Date(state.lastCopyDate)).getTime() + config.delayBetweenCopyRetryInSeconds * 1000)) {
                 promises.push(
                     // Make an interface for this
@@ -64,6 +67,7 @@ const main = async () => {
                 promises.push(checkAndInstallUpdate());
             }
         } else {
+            state.isConnected = false;
             // do wifi hotspot stuff here
         }
 
